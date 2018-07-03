@@ -31,7 +31,8 @@
 *.out
 *.app
 
-# Codeblocks generated files
+# Codeblocks generated files and directories
 *.depend
 *.layout
-
+bin
+obj
