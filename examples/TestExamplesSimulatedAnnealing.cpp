@@ -422,7 +422,7 @@ TEST(SimulatedAnnealing_ODE3DVariant)  // From Unfit 1
   sa.bounds.SetBounds(1, -100.0, 100.0);
   sa.bounds.SetBounds(2, -10.0, 10.0);
   sa.options.SetNumberOfTemperatureLoops(20);
-  sa.options.SetMaxFunctionEvaluations(500000);
+  sa.options.SetMaxFunctionEvaluations(800000);
   // Read in the experimental data
   std::vector<double> t;
   std::vector<double> x;
