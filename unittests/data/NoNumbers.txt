@@ -1,0 +1,6 @@
+this is a test to see
+what will happen
+if 
+my data file
+only contains text and does not contain
+any digits
