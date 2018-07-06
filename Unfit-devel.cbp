@@ -26,19 +26,20 @@
 					<Add option="-Weffc++" />
 					<Add option="-Wmain" />
 					<Add option="-pedantic" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="--coverage" />
-					<Add directory="UnitTest++/src" />
+					<Add directory="../UnitTest-cpp/UnitTest++/src" />
+					<Add directory="../UnitTest-cpp" />
 					<Add directory="include" />
 					<Add directory="examples" />
 					<Add directory="unittests" />
 				</Compiler>
 				<Linker>
 					<Add option="--coverage" />
-					<Add library="UnitTest++/lib/Debug/libUnitTest++.a" />
+					<Add library="../UnitTest-cpp/lib/Debug/libUnitTest++.a" />
 					<Add library="pthread" />
 					<Add directory="UnitTest++/lib/Debug" />
 				</Linker>
@@ -66,15 +67,16 @@
 					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-std=c++0x" />
-					<Add directory="UnitTest++/src" />
+					<Add option="-std=c++11" />
+					<Add directory="../UnitTest-cpp/UnitTest++/src" />
+					<Add directory="../UnitTest-cpp" />
 					<Add directory="include" />
 					<Add directory="examples" />
 					<Add directory="unittests" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="UnitTest++/lib/Debug/libUnitTest++.a" />
+					<Add library="../UnitTest-cpp/lib/Release/libUnitTest++.a" />
 					<Add library="pthread" />
 					<Add directory="../UnitTest++/Deliv/Debug" />
 				</Linker>
@@ -104,7 +106,7 @@
 					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-std=c++0x" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add directory="include" />
 				</Compiler>
@@ -118,6 +120,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="../UnitTest-cpp/UnitTestCustomUtilities.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="examples/CardiacAlphaN.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />
@@ -304,10 +310,6 @@
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="unittests/TestSimulatedAnnealing.cpp">
-			<Option target="Debug" />
-			<Option target="Release" />
-		</Unit>
-		<Unit filename="unittests/UnitTestCustomUtilities.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
