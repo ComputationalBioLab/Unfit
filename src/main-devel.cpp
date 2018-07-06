@@ -24,21 +24,21 @@
 
 int main()
 {
-  return Unfit::RunAllTheTests();
+  return UnitTest::RunAllTheTests();
 
-  // to run only one suite, uncomment the following line
+  // To run only one suite, uncomment the following line
   // and specify the name of the suite. Also, comment out the RunAllTheTests()
-  // return Unfit::RunOneSuite("suite_name");
+  // return UnitTest::RunOneSuite("suite_name");
 
-  // to run only one test, uncomment the following line
+  // To run only one test, uncomment the following line
   // and specify the name of the test.Also, comment out the RunAllTheTests()
-  // return Unfit::RunOneTest("test_name");
+  // return UnitTest::RunOneTest("test_name");
 
-  // to run multiple suites, uncomment the following line
+  // To run multiple suites, uncomment the following line
   // and specify the names of the suites. Also, comment out the RunAllTheTests()
-  // return Unfit::RunMultipleSuites(suite_names);
+  // return UnitTest::RunMultipleSuites(suite_names);
 
-  // to run multiple tests, uncomment the following line
+  // To run multiple tests, uncomment the following line
   // and specify the names of the tests. Also, comment out the RunAllTheTests()
-  // return Unfit::RunMultipleTests(test_names);
+  // return UnitTest::RunMultipleTests(test_names);
 }
