@@ -44,7 +44,7 @@ TEST(Matrix_Constructor1)
 TEST(Matrix_Constructor2)
 {
   std::vector<double> dummy;
-  dummy.assign(20.0, 0);
+  dummy.assign(20u, 0);
   for (unsigned i = 0; i < 20; ++i)    dummy[i] = i*22+i;
   Matrix matrix3(5, 4, dummy);
   CHECK_EQUAL(4u, matrix3.GetNumberOfColumns());
@@ -57,7 +57,7 @@ TEST(Matrix_Constructor2)
 TEST(Matrix_Constructor3)
 {  // error msg WILL come out
   std::vector<double> dummy;
-  dummy.assign(20.0, 0);
+  dummy.assign(20u, 0);
   for (unsigned i = 0; i < 20; ++i)    dummy[i] = i*22+i;
   Matrix matrix4(4, 4, dummy);
   CHECK_EQUAL(0u, matrix4.GetNumberOfColumns());

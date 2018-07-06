@@ -25,6 +25,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <numeric>
 #include <vector>
 #include "Bounds.hpp"
 #include "ConjugateGradient.hpp"

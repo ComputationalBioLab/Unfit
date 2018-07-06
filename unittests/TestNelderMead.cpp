@@ -21,6 +21,7 @@
 //
 #include <cmath>
 #include <limits>
+#include <numeric>
 #include <vector>
 #include "GenericCostFunction.hpp"
 #include "NelderMead.hpp"
@@ -1341,7 +1342,7 @@ TEST_FIXTURE(TestNelderMead, IsConverged1)
   SetVertices(v1);
 
   // Check that IsConverged checks the vector correctly
-  CHECK_CLOSE(0, IsConverged(v1[0]), epsilon);
+  CHECK(!IsConverged(v1[0]));
 }
 
 // Check if IsAreaConverged returns the right return codes.
@@ -1353,7 +1354,7 @@ TEST_FIXTURE(TestNelderMead, IsConverged2)
   SetVertices(v1);
 
   // Check that if vertices are far apart, return 0
-  CHECK_CLOSE(1, IsConverged(v1[0]), epsilon);
+  CHECK(IsConverged(v1[0]));
 }
 
 // Test whether the default constructor contains the correct values
@@ -2149,11 +2150,12 @@ TEST_FIXTURE(TestNelderMead, EdgeCasesMaxFunctionAndIteration)
   CHECK_EQUAL(2u, options.GetMaxIterations());
   CHECK_EQUAL(0u, options.GetMaxFunctionEvaluations());
 
-  // Check behaviour if user keyed in a negative number
-  options.SetMaxIterations(-std::numeric_limits<unsigned>::max());
-  options.SetMaxFunctionEvaluations(-std::numeric_limits<unsigned>::max()+2);
-  CHECK_EQUAL(1u, options.GetMaxIterations());
-  CHECK_EQUAL(3u, options.GetMaxFunctionEvaluations());
+// Actually this test is not useful as you cannot legally negate an unsigned
+//  // Check behaviour if user keyed in a negative number
+//  options.SetMaxIterations(-std::numeric_limits<unsigned>::max());
+//  options.SetMaxFunctionEvaluations(-std::numeric_limits<unsigned>::max()+2);
+//  CHECK_EQUAL(1u, options.GetMaxIterations());
+//  CHECK_EQUAL(3u, options.GetMaxFunctionEvaluations());
 
 // Actually this test is not useful/needed as the truncation rules are clear
 //  // Check behaviour if user keyed in not an integer

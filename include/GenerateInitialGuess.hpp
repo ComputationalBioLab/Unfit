@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <future>
+#include <numeric>
 #include <random>
 #include <vector>
 

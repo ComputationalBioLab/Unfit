@@ -24,6 +24,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <numeric>
 #include <random>
 #include <vector>
 #include "Bounds.hpp"
