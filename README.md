@@ -41,6 +41,10 @@ https://github.com/unittest-cpp/unittest-cpp
 
 Unfit was developed using UnitTest++ version 1.4 without any major modifications. The only thing we did was to create the Code::Blocks project file so that the UnitTest++ library can be easily compiled alongside Unfit using the same IDE. We have, however, written some nice utility functions to allow you to easily run just one test, or one suite. One day we will get around to upgrading. 
 
+### A Note to Clang Users
+
+We do compile Unfit with clang from time to time, so it is likely that the code will compile with clang++. Consider it an unsupported feature. On Linux, we usually use the conversion tool *cbp2make* to convert the CodeBlocks project files into make files. After that, we simply use a text editor to replace gcc with clang++ as needed in the make files, and build using the command line. If we are feeling enthusiastic we also utilise clang/llvm's static analyser to make sure our code is clean.
+
 ### A Note to Visual Studio Users
 
 If you are a hard core Visual Studio fan and don't want to use Code::Blocks, it is possible to compile Unfit in Visual Studio. However, at the time of writing Visual Studio does not support some C++11 constexpr functionality (which we use). All of the _problem_ code is in Options.hpp and Options.cpp. All you need to do is explicitly put the defaults into the constructor and the Reset methods,
