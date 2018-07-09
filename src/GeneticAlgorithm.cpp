@@ -78,10 +78,10 @@ void GeneticAlgorithm::MutateGenes(GenericCostFunction &CostFunction)
 {
   const auto population_size = options.GetPopulationSize();
   const auto elitism = options.GetElitism();
+  if (elitism >= population_size) return;  // All elite = no mutations
   std::uniform_int_distribution<unsigned> eligible_chromosomes(elitism,
       population_size - 1u);
   std::uniform_int_distribution<unsigned> eligible_genes(0u, dimensions_ - 1u);
-  if (elitism >= population_size) return;  // All elite = no mutations
   const auto gamma = options.GetGamma();
   const auto number_of_mutations = static_cast<unsigned>(gamma *
       population_size * dimensions_);
