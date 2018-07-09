@@ -502,8 +502,11 @@ TEST_FIXTURE(TestNelderMead, SettingVertices)
   // Create three empty vector to be used to get the vertex out from the private
   // member
   std::vector<double> best = GetSolution(0);
+  best.push_back(GetCost(0));
   std::vector<double> good = GetSolution(1);
+  good.push_back(GetCost(1));
   std::vector<double> worst = GetSolution(2);
+  worst.push_back(GetCost(2));
   // Check the vector that is extracted out with what was being set.
   CHECK_CLOSE(2, best[0], epsilon);
   CHECK_CLOSE(4, best[1], epsilon);
@@ -528,8 +531,11 @@ TEST_FIXTURE(TestNelderMead, SortPopulationNegativeIntegers)
 
   // Empty vectors to get sorted vertices
   std::vector<double> v4 = GetSolution(0);
+  v4.push_back(GetCost(0));
   std::vector<double> v5 = GetSolution(1);
+  v5.push_back(GetCost(1));
   std::vector<double> v6 = GetSolution(2);
+  v6.push_back(GetCost(2));
 
   // Check if vertices have been sorted properly
   CHECK_CLOSE(56, v4[0], epsilon);
@@ -555,8 +561,11 @@ TEST_FIXTURE(TestNelderMead, SortPopulationPositiveIntegers)
 
   // Empty vectors to get sorted vertices
   std::vector<double> v4 = GetSolution(0);
+  v4.push_back(GetCost(0));
   std::vector<double> v5 = GetSolution(1);
+  v5.push_back(GetCost(1));
   std::vector<double> v6 = GetSolution(2);
+  v6.push_back(GetCost(2));
 
   // Check if vertices have been sorted properly
   CHECK_CLOSE(45, v4[0], epsilon);
@@ -581,8 +590,11 @@ TEST_FIXTURE(TestNelderMead, SortPopulationNegativeDecimals)
 
   // Empty vectors to get sorted vertices
   std::vector<double> v4 = GetSolution(0);
+  v4.push_back(GetCost(0));
   std::vector<double> v5 = GetSolution(1);
+  v5.push_back(GetCost(1));
   std::vector<double> v6 = GetSolution(2);
+  v6.push_back(GetCost(2));
 
   // Check if vertices have been sorted properly
   CHECK_CLOSE(2, v4[0], epsilon);
@@ -607,8 +619,11 @@ TEST_FIXTURE(TestNelderMead, SortPopulationNegativeCoordinates)
 
   // Empty vectors to get sorted vertices
   std::vector<double> v4 = GetSolution(0);
+  v4.push_back(GetCost(0));
   std::vector<double> v5 = GetSolution(1);
+  v5.push_back(GetCost(1));
   std::vector<double> v6 = GetSolution(2);
+  v6.push_back(GetCost(2));
 
   // Check if vertices have been sorted properly
   CHECK_CLOSE(-2, v4[0], epsilon);
@@ -632,8 +647,11 @@ TEST_FIXTURE(TestNelderMead, SortPopulationNegativeCoordinatesAndCost)
 
   // Empty vectors to get sorted vertices
   std::vector<double> v4 = GetSolution(0);
+  v4.push_back(GetCost(0));
   std::vector<double> v5 = GetSolution(1);
+  v5.push_back(GetCost(1));
   std::vector<double> v6 = GetSolution(2);
+  v6.push_back(GetCost(2));
 
   // Check if vertices have been sorted properly
   CHECK_CLOSE(2, v4[0], epsilon);
@@ -657,8 +675,11 @@ TEST_FIXTURE(TestNelderMead, SortPopulationDecimalCoordinateAndCost)
 
   // Empty vectors to get sorted vertices
   std::vector<double> v4 = GetSolution(0);
+  v4.push_back(GetCost(0));
   std::vector<double> v5 = GetSolution(1);
+  v5.push_back(GetCost(1));
   std::vector<double> v6 = GetSolution(2);
+  v6.push_back(GetCost(2));
 
   // Check if vertices have been sorted properly
   CHECK_CLOSE(2.1, v4[0], epsilon);
@@ -694,16 +715,27 @@ TEST_FIXTURE(TestNelderMead, SortPopulation10D)
 
   // Empty vectors to get sorted vertices
   std::vector<double> v2 = GetSolution(0);
+  v2.push_back(GetCost(0));
   std::vector<double> v3 = GetSolution(1);
+  v3.push_back(GetCost(1));
   std::vector<double> v4 = GetSolution(2);
+  v4.push_back(GetCost(2));
   std::vector<double> v5 = GetSolution(3);
+  v5.push_back(GetCost(3));
   std::vector<double> v6 = GetSolution(4);
+  v6.push_back(GetCost(4));
   std::vector<double> v7 = GetSolution(5);
+  v7.push_back(GetCost(5));
   std::vector<double> v8 = GetSolution(6);
+  v8.push_back(GetCost(6));
   std::vector<double> v9 = GetSolution(7);
+  v9.push_back(GetCost(7));
   std::vector<double> v10 = GetSolution(8);
+  v10.push_back(GetCost(8));
   std::vector<double> v11 = GetSolution(9);
+  v11.push_back(GetCost(9));
   std::vector<double> v12 = GetSolution(10);
+  v12.push_back(GetCost(10));
 
   // Check if vertices have been sorted properly
   CHECK_CLOSE(1, v2[10], epsilon);
@@ -787,6 +819,7 @@ TEST_FIXTURE(TestNelderMead, ComputeCentroid4D)
 
   // Initialise an empty vector and get the best vertice and test
   std::vector<double> v2 = GetSolution(0);
+  v2.push_back(GetCost(0));
   CHECK_CLOSE(0, v2[0], epsilon);
   CHECK_CLOSE(0, v2[1], epsilon);
   CHECK_CLOSE(0, v2[2], epsilon);
@@ -981,10 +1014,12 @@ TEST_FIXTURE(TestNelderMead, Shrink1)
 
   // Initialise an empty vector and get the shrunk points and test the values
   std::vector<double> v2 = GetSolution(1);
+  v2.push_back(GetCost(1));
   CHECK_CLOSE(1, v2[0], epsilon);
   CHECK_CLOSE(3, v2[1], epsilon);
   CHECK_CLOSE(0, v2[2], epsilon);
   v2 = GetSolution(2);
+  v2.push_back(GetCost(2)); 
   CHECK_CLOSE(1, v2[0], epsilon);
   CHECK_CLOSE(2, v2[1], epsilon);
   CHECK_CLOSE(3, v2[2], epsilon);
@@ -1503,9 +1538,13 @@ TEST_FIXTURE(TestNelderMead, GeneratePopulation2)
 
   // Initialise vectors and get the vertices from the NelderMead class
   vertex0 = GetSolution(0);
+  vertex0.push_back(GetCost(0));
   std::vector<double> vertex1 = GetSolution(1);
+  vertex1.push_back(GetCost(1));
   std::vector<double> vertex2 = GetSolution(2);
+  vertex2.push_back(GetCost(2));
   std::vector<double> vertex3 = GetSolution(3);
+  vertex3.push_back(GetCost(3));
   // vertex0
   CHECK_CLOSE(0, vertex0[0], epsilon);
   CHECK_CLOSE(1, vertex0[1], epsilon);
@@ -1547,6 +1586,7 @@ TEST_FIXTURE(TestNelderMead, GeneratePopulation3)
 
   // Initialise vectors and get the vertices from the NelderMead class
   vertex0 = GetSolution(2);
+  vertex0.push_back(GetCost(2));
   // vertex0
   CHECK_CLOSE(0, vertex0[0], epsilon);
   CHECK_CLOSE(-1.05, vertex0[1], epsilon);
@@ -1571,6 +1611,7 @@ TEST_FIXTURE(TestNelderMead, GeneratePopulation4)
 
   // Get the vertices out from the NelderMead class
   vertex0 = GetSolution(1);
+  vertex0.push_back(GetCost(1));
   // vertex1
   CHECK_CLOSE(0.95, vertex0[0], epsilon);
   CHECK_CLOSE(0, vertex0[1], epsilon);
@@ -1590,6 +1631,7 @@ TEST_FIXTURE(TestNelderMead, GeneratePopulation5)
   bounds.SetBounds(0, -1, 1);
   AccessGeneratePopulation(Func, vertex0);
   vertex0 = GetSolution(1);
+  vertex0.push_back(GetCost(1));
 
   // vertex1
   // Check the result matches what we expect
@@ -1616,6 +1658,7 @@ TEST_FIXTURE(TestNelderMead, GeneratePopulation6)
 
   // Get the vertices out from the NelderMead class
   vertex0 = GetSolution(1);
+  vertex0.push_back(GetCost(1));
   // vertex1
   CHECK_CLOSE(0.00025, vertex0[0], epsilon);
   CHECK_CLOSE(0, vertex0[1], epsilon);
@@ -1640,6 +1683,7 @@ TEST_FIXTURE(TestNelderMead, GeneratePopulation7)
 
   // Get the vertices out from the NelderMead class
   vertex0 = GetSolution(1);
+  vertex0.push_back(GetCost(1));
   // vertex1
   CHECK_CLOSE(-0.00025, vertex0[0], epsilon);
   CHECK_CLOSE(0, vertex0[1], epsilon);
@@ -1974,9 +2018,13 @@ TEST_FIXTURE(TestNelderMead, RegeneratePopulation1)
 
   // Get the vertices of the regenerated simplex and check
   vertex0 = GetSolution(0);
+  vertex0.push_back(GetCost(0));
   vertex1 = GetSolution(1);
+  vertex1.push_back(GetCost(1));
   vertex2 = GetSolution(2);
+  vertex2.push_back(GetCost(2));
   vertex3 = GetSolution(3);
+  vertex3.push_back(GetCost(3));
   // vertex0
   CHECK_CLOSE(0, vertex0[0], epsilon);
   CHECK_CLOSE(0, vertex0[1], epsilon);
@@ -2028,6 +2076,7 @@ TEST_FIXTURE(TestNelderMead, RegeneratePopulation2)
 
   // Get the vertices of the regenerated simplex and check
   vertex0 = GetSolution(1);
+  vertex0.push_back(GetCost(1));
 
   // vertex0
   CHECK_CLOSE(0.00025, vertex0[0], epsilon);
