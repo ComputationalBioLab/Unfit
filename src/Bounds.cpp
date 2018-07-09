@@ -26,8 +26,10 @@
 
 namespace Unfit
 {
-static const double max_positive_num {std::numeric_limits<double>::max()};
-static const double max_negative_num {-std::numeric_limits<double>::max()};
+static const double max_positive_num
+    {static_cast<double>(std::numeric_limits<float>::max())};
+static const double max_negative_num
+    {-static_cast<double>(std::numeric_limits<float>::max())};
 
 Bounds::Bounds()
   : upper_bound_ {},

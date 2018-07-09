@@ -46,8 +46,9 @@ class Bounds
 
   /**
    * Create a Bounds object and sets number_of_bounds variables to have a lower
-   * bound at equal to the maximum negative double and an upper bound equal to
-   * the maximum positive double.
+   * bound at equal to the maximum negative float and an upper bound equal to
+   * the maximum positive float (stored as doubles). The reason for this is that
+   * on some platforms using the minimum and maximum doubles has caused issues.
    *
    * \param number_of_bounds The number of variables in the problem
    */
@@ -140,8 +141,8 @@ class Bounds
 
   /**
    * This method keeps the number of bounds unchanged, but resets them such
-   * that all of the lower bounds are the maximum negative double and all of the
-   * upper bounds are the maximum positive double.
+   * that all of the lower bounds are the maximum negative float and all of the
+   * upper bounds are the maximum positive float (stored as doubles).
    */
   void ResetBounds();
 

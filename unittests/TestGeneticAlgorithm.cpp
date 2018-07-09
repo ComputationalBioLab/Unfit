@@ -259,10 +259,14 @@ TEST_FIXTURE(TestGeneticAlgorithm, InitialiseBoundsDefaultBounds)
   // Check the bounds have been correctly set for the two variables
   CHECK_EQUAL(2u, lower_bounds.size());
   CHECK_EQUAL(2u, upper_bounds.size());
-  CHECK_CLOSE(-std::numeric_limits<double>::max(), lower_bounds[0], 1e-8);
-  CHECK_CLOSE(-std::numeric_limits<double>::max(), lower_bounds[1], 1e-8);
-  CHECK_CLOSE(std::numeric_limits<double>::max(), upper_bounds[0], 1e-8);
-  CHECK_CLOSE(std::numeric_limits<double>::max(), upper_bounds[1], 1e-8);
+  const double max_positive_num
+    {static_cast<double>(std::numeric_limits<float>::max())};
+  const double max_negative_num
+    {-static_cast<double>(std::numeric_limits<float>::max())};
+  CHECK_CLOSE(max_negative_num, lower_bounds[0], 1e-8);
+  CHECK_CLOSE(max_negative_num, lower_bounds[1], 1e-8);
+  CHECK_CLOSE(max_positive_num, upper_bounds[0], 1e-8);
+  CHECK_CLOSE(max_positive_num, upper_bounds[1], 1e-8);
 }
 
 TEST_FIXTURE(TestGeneticAlgorithm, InitialiseBoundsTightBounds)

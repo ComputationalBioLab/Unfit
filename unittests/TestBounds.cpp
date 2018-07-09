@@ -24,8 +24,10 @@
 #include "UnitTest++.h"
 #include "Bounds.hpp"
 
-static const double max_positive_num {std::numeric_limits<double>::max()};
-static const double max_negative_num {-std::numeric_limits<double>::max()};
+static const double max_positive_num
+    {static_cast<double>(std::numeric_limits<float>::max())};
+static const double max_negative_num
+    {-static_cast<double>(std::numeric_limits<float>::max())};
 static const double bound_test_tol {1e-16};
 
 namespace Unfit
@@ -187,12 +189,12 @@ TEST(Bounds_SetBoundsErrorCases)
   CHECK(!some_bounds.SetBounds(lower, upper));
 
   // Negative infinite bound
-  lower.push_back(max_negative_num*10.0);
+  lower.push_back(-std::numeric_limits<double>::infinity());
   CHECK(!some_bounds.SetBounds(lower, upper));
 
   // Positive infinite bound
   lower[2] = 0.0;
-  upper[1] = max_positive_num*10.0;
+  upper[1] = std::numeric_limits<double>::infinity();
   CHECK(!some_bounds.SetBounds(lower, upper));
 
   // Lower bound > upper bound
@@ -211,10 +213,10 @@ TEST(Bounds_SetOneBoundErrorCases)
   Unfit::Bounds some_bounds(3);
 
   // Negative infinite bound
-  CHECK(!some_bounds.SetBounds(2, max_negative_num*10.0, 1.0));
+  CHECK(!some_bounds.SetBounds(2, -std::numeric_limits<double>::infinity(), 1.0));
 
   // Positive infinite bound
-  CHECK(!some_bounds.SetBounds(2, 0.0, max_positive_num*10.0));
+  CHECK(!some_bounds.SetBounds(2, 0.0, std::numeric_limits<double>::infinity()));
 
   // Lower bound > upper bound
   CHECK(!some_bounds.SetBounds(2, 1.0, 0.0));
