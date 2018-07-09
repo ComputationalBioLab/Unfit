@@ -43,7 +43,7 @@ Unfit was developed using UnitTest++ version 1.4 without any major modifications
 
 ### A Note to Clang Users
 
-We do compile Unfit with clang from time to time, so it is likely that the code will compile with clang++. Consider it an unsupported feature. On Linux, we usually use the conversion tool *cbp2make* to convert the CodeBlocks project files into make files. After that, we simply use a text editor to replace gcc with clang++ as needed in the make files, and build using the command line. If we are feeling enthusiastic we also utilise clang/llvm's static analyser to make sure our code is clean.
+We do compile Unfit with clang from time to time, so it is likely that the code will compile with clang++. Consider it an unsupported feature. On Linux, we usually use the conversion tool *cbp2make* to convert the CodeBlocks project files into make files. After that, we simply use a text editor to replace gcc with clang/clang++/llvm-ar as needed in the make files, and build using the command line. If we are feeling enthusiastic we also utilise clang/llvm's static analyser to make sure our code is clean.
 
 ### A Note to Visual Studio Users
 
