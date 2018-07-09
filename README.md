@@ -5,7 +5,7 @@ Data fitting and optimization software
 
 1. Download & install Code::Blocks (http://www.codeblocks.org/).
    Note: if you are on Windows, choose the version with GCC (mingw)
-2. Download Unfit
+2. Download Unfit, e.g.
     ```git clone https://github.com/ComputationalBioLab/Unfit.git```
 3. Start Code::Blocks and open the Unfit project file (Unfit.cbp)
 4. Build & Run
@@ -14,7 +14,8 @@ Data fitting and optimization software
 
 1. Download & install Code::Blocks (http://www.codeblocks.org/).
    Note: if you are on Windows, choose the version with GCC (mingw)
-2. Download Unfit
+2. Download Unfit & UnitTest++
+    ```git clone https://github.com/ComputationalBioLab/UnitTest-cpp.git```
     ```git clone https://github.com/ComputationalBioLab/Unfit.git```
 3. Start Code::Blocks and open the UnitTest++ project file (UnitTest++.cbp)
 4. Build (this should create Debug and Release libraries by default).
