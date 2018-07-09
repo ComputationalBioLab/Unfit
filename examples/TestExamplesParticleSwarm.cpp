@@ -85,7 +85,7 @@ TEST(ParticleSwarm_CardiacAlphaN)  // From Unfit 1
   std::vector<double> vm;
   std::vector<double> alpha_n;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/alphadata.csv"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/alphadata.csv"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, vm));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, alpha_n));
   CHECK_EQUAL(vm.size(), alpha_n.size());
@@ -127,7 +127,7 @@ TEST(ParticleSwarm_Exponential)
   std::vector<double> x;
   std::vector<double> y;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/exponential_exp_data.dat"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/exponential_exp_data.dat"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, x));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, y));
   CHECK_EQUAL(x.size(), y.size());
@@ -167,7 +167,7 @@ TEST(ParticleSwarm_Gaussian)
   std::vector<double> x;
   std::vector<double> y;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/gaussian_exp_data.dat"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/gaussian_exp_data.dat"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, x));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, y));
   CHECK_EQUAL(x.size(), y.size());
@@ -211,7 +211,7 @@ TEST(ParticleSwarm_Gaussian)
 //  std::vector<double> t;
 //  std::vector<double> z_a;
 //  Unfit::DataFileReader<double> dfr;
-//  CHECK_EQUAL(0u, dfr.ReadFile("examples/training_data_zA.txt"));
+//  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/training_data_zA.txt"));
 //  CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t));
 //  CHECK_EQUAL(0u, dfr.RetrieveColumn(1, z_a));
 //  auto dt = t[1] - t[0];
@@ -280,7 +280,7 @@ TEST(ParticleSwarm_HodgkinHuxleyBetaN)  // From Unfit 1
   std::vector<double> vm;
   std::vector<double> beta_n;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/expdata.txt"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/expdata.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, vm));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, beta_n));
   CHECK_EQUAL(vm.size(), beta_n.size());
@@ -347,7 +347,7 @@ TEST(ParticleSwarm_NonStationaryMarkov)  // From Unfit 1
   std::vector<std::vector<double>> x;
   x.assign(8, std::vector<double> (20, 0));
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/nsMarkovData.txt"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/nsMarkovData.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, x[0]));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, x[1]));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(2, x[2]));
@@ -391,7 +391,7 @@ TEST(ParticleSwarm_ODE2D)  // From Unfit 1
   std::vector<double> t;
   std::vector<double> x;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/test.txt"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/test.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, x));
   auto dt = t[1] - t[0];
@@ -428,7 +428,7 @@ TEST(ParticleSwarm_ODE3DVariant)  // From Unfit 1
   std::vector<double> t;
   std::vector<double> x;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/test.txt"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/test.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, x));
   auto dt = t[1] - t[0];
@@ -507,7 +507,7 @@ TEST(ParticleSwarm_Parabolic)
   std::vector<double> x;
   std::vector<double> y;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/parabolic_exp_data.dat"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/parabolic_exp_data.dat"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, x));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, y));
   CHECK_EQUAL(x.size(), y.size());
@@ -603,7 +603,7 @@ TEST(ParticleSwarm_ThreeNaMarkov)  // From Unfit 1
   std::vector<double> t;
   std::vector<double> po;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/ThreeNaMarkov.csv"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/ThreeNaMarkov.csv"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, po));
   auto dt = t[1] - t[0];
