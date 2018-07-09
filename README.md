@@ -47,9 +47,10 @@ We do compile Unfit with clang from time to time, so it is likely that the code 
 
 ### A Note to Visual Studio Users
 
-If you are a hard core Visual Studio fan and don't want to use Code::Blocks, it is possible to compile Unfit in Visual Studio. However, at the time of writing Visual Studio does not support some C++11 constexpr functionality (which we use). All of the _problem_ code is in Options.hpp and Options.cpp. All you need to do is explicitly put the defaults into the constructor and the Reset methods,
-then you can removed the constexpr lines and all should hopefully compile. 
+If you are a hard core Visual Studio fan and don't want to use Code::Blocks, it is possible to compile Unfit in Visual Studio. We do it on a very irregular basis. Most of the code works as advertised when compiling with Visual Studio. However, there is one key thing to be aware of and that is the random numbers generated from a uniform integer distribution do not follow the same sequence as they do with Linux/GCC. The Genetic Algorithm method is the worst affected by this. It still works, but some of our tests fail because e.g. a different number of mutations are generated in different chromosomes. The other methods that is affected is Particle Swarm. To reiterate, these methods still work, it is just the test output that is different, and we don't want to add any platform specific compiler directives to the code.
 
-### A Note to non-Linux Users
-There appear to be some differences in the random number generation implementations across different platforms. All of the test examples work well on Linux, but we know that some do not on the Mac which appears to be due to differences with the numbers coming out of the uniform distribution. Some examples may fail due to the stochastic nature of some of the algorithms, and we don't have a Mac platform to test on.
+### A Note to Mac Users
+
+As per the above note to Visual Studio users, this random number issue also appears on the Mac. Some tests may fail due to the stochastic nature of some of the algorithms, but the underlying method is still valid. Note that we don't have a Mac platform to test on and so are probably not much use for Mac support.
+
 
