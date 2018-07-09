@@ -30,7 +30,7 @@ namespace Unfit
 {
 namespace UnitTests
 {
-SUITE(UnitTesetConjugateGradient)
+SUITE(UnitTestConjugateGradient)
 {
 TEST(ConjugateGradient_SimpleSolve)
 {
