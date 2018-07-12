@@ -70,6 +70,23 @@ TEST(Options_GetSetOutputLevel)
   CHECK_EQUAL(0u, options.GetOutputLevel());
 }
 
+TEST(Options_GetSetCostNormType)
+{
+  Unfit::Options options;
+  CHECK_EQUAL(2u, options.GetCostNormType());
+  options.SetCostNormType(1);
+  CHECK_EQUAL(1u, options.GetCostNormType());
+  options.SetCostNormType(2);
+  CHECK_EQUAL(2u, options.GetCostNormType());
+  options.SetCostNormType(0);
+  CHECK_EQUAL(2u, options.GetCostNormType());
+  options.SetCostNormType(3);
+  CHECK_EQUAL(2u, options.GetCostNormType());
+  options.SetCostNormType(1);
+  options.ResetOptions();
+  CHECK_EQUAL(2u, options.GetCostNormType());
+}
+
 TEST(Options_GetSetTolerances)
 {
   Unfit::Options options;

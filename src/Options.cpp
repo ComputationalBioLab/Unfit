@@ -27,6 +27,7 @@ Options::Options()
   : max_function_evaluations_ {default_max_function_evaluations_}
   , max_iterations_ {default_max_iterations_}
   , output_level_ {default_output_level_}
+  , cost_norm_type_ {default_cost_norm_type_}
   , cost_tolerance_ {default_cost_tolerance_}
   , degenerate_tolerance_ {default_degenerate_tolerance_}
   , geometric_tolerance_ {default_geometric_tolerance_}
@@ -62,6 +63,7 @@ void Options::ResetOptions()
   max_function_evaluations_ = default_max_function_evaluations_;
   max_iterations_ = default_max_iterations_;
   output_level_ = default_output_level_;
+  cost_norm_type_ = default_cost_norm_type_;
   cost_tolerance_ = default_cost_tolerance_;
   degenerate_tolerance_ = default_degenerate_tolerance_;
   geometric_tolerance_ = default_geometric_tolerance_;
@@ -236,6 +238,18 @@ unsigned Options::GetOutputLevel() const noexcept
 void Options::SetOutputLevel(unsigned output_level)
 {
   output_level_ = output_level;
+}
+
+unsigned Options::GetCostNormType() const noexcept
+{
+  return cost_norm_type_;
+}
+
+void Options::SetCostNormType(unsigned cost_norm_type)
+{
+  cost_norm_type_ = cost_norm_type;
+  if (cost_norm_type_ < 1u) cost_norm_type_ = 2u;
+  if (cost_norm_type_ > 2u) cost_norm_type_ = 2u;
 }
 
 bool Options::GetUseAdaptiveParameters() const noexcept

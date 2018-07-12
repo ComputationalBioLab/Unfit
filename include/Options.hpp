@@ -322,6 +322,28 @@ class Options
   void SetOutputLevel(unsigned output_level);
 
   /**
+   * Gets the current norm type used for calculating the cost of the current
+   * parameter estimate. The default is the L2 norm (sum of squared error)
+   * because that is what Levenberg-Marquardt requires. The other option is
+   * the L1 norm (sum of absolute errors).
+   *
+   * \return The current norm level: 1 = using the L1 norm, 2 = using L2
+   */
+  unsigned GetCostNormType() const noexcept;
+
+  /**
+   * Sets the desired norm type for for calculating the cost of the current
+   * parameter estimate. The default is the L2 norm (sum of squared error)
+   * because that is what Levenberg-Marquardt requires. The other option is
+   * the L1 norm (sum of absolute errors). Although the other optimisers will
+   * use the L1 norm if you ask them to, Levenberg-Marquardt always has to use
+   * L2.
+   *
+   * \param cost_norm_type Set to 1 to use the L1 norm, or 2 for the L2 norm
+   */
+  void SetCostNormType(unsigned cost_norm_type);
+
+  /**
    * Get a boolean which states whether or not the algorithm is currently using
    * adaptive parameters.
    *
@@ -648,6 +670,8 @@ class Options
   unsigned max_iterations_;
   /** Specify the amount of output to write out during the optimization*/
   unsigned output_level_;
+  /** Specify the norm type, L2 (default) or L1, for cost calculations*/
+  unsigned cost_norm_type_;
   /**
    * The tolerance for the convergence of the cost function. This represents
    * the epsilon parameter in the Levenberg-Marquardt algorithm.
@@ -738,6 +762,8 @@ class Options
   static constexpr unsigned default_max_iterations_ = 10000;
   /** Default output level for the optimization*/
   static constexpr unsigned default_output_level_ = 0;
+  /** Default norm type for cost calculation, L2*/
+  static constexpr unsigned default_cost_norm_type_ = 2;
   /** Default tolerance for the convergence of the cost function*/
   static constexpr double default_cost_tolerance_ = 1e-12;
   /** Default tolerance for Nelder-Mead to check vertex colinearity*/

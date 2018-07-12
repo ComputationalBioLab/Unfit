@@ -178,6 +178,23 @@ TEST(GenericOptimizer_GetSolution)
   CHECK(opt.GetSolution(3).empty());
 }
 
+TEST_FIXTURE(TestGenericOptimizer, NormCalculation)
+{
+  SimpleCostFunction cost_func;
+  std::vector<double> coordinates {-1.0, 2.0, -3.0, 0.0};
+  CHECK(CalculateCost(cost_func, coordinates));
+  CHECK_CLOSE(14.0, coordinates.back(), 1e-12);
+  options.SetCostNormType(1);
+  CHECK(CalculateCost(cost_func, coordinates));
+  CHECK_CLOSE(6.0, coordinates.back(), 1e-12);
+  options.SetCostNormType(0);
+  CHECK(CalculateCost(cost_func, coordinates));
+  CHECK_CLOSE(14.0, coordinates.back(), 1e-12);
+  options.SetCostNormType(10);
+  CHECK(CalculateCost(cost_func, coordinates));
+  CHECK_CLOSE(14.0, coordinates.back(), 1e-12);
+}
+
 TEST_FIXTURE(TestGenericOptimizer, CalculateCost)
 {
   SimpleCostFunction cost_func;

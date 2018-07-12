@@ -112,8 +112,15 @@ bool GenericOptimizer::CalculateCost(GenericCostFunction &CostFunction,
     x.back() = std::numeric_limits<double>::infinity();
     return false;
   }
-  x.back() = std::inner_product(begin(residuals), end(residuals),
-      begin(residuals), 0.0);
+  if (options.GetCostNormType() == 1u) {
+    // L1 norm: sum of absolute residuals
+    x.back() = std::accumulate(begin(residuals), end(residuals),0.0,
+        [](double a, double b) {return a + std::fabs(b);});
+  } else {
+    // L2 norm: sum of squared residuals
+    x.back() = std::inner_product(begin(residuals), end(residuals),
+        begin(residuals), 0.0);
+  }
   return std::isfinite(x.back());
 }
 
