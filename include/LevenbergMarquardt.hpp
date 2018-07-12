@@ -48,6 +48,7 @@ namespace Unfit
  */
 class LevenbergMarquardt : public GenericOptimizer
 {
+  /** For unit testing purposes only*/
   friend class TestLevenbergMarquardt;
  public:
   /**

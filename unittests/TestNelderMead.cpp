@@ -1019,7 +1019,7 @@ TEST_FIXTURE(TestNelderMead, Shrink1)
   CHECK_CLOSE(3, v2[1], epsilon);
   CHECK_CLOSE(0, v2[2], epsilon);
   v2 = GetSolution(2);
-  v2.push_back(GetCost(2)); 
+  v2.push_back(GetCost(2));
   CHECK_CLOSE(1, v2[0], epsilon);
   CHECK_CLOSE(2, v2[1], epsilon);
   CHECK_CLOSE(3, v2[2], epsilon);

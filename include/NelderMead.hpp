@@ -43,6 +43,7 @@ namespace Unfit
  */
 class NelderMead : public GenericOptimizer
 {
+  /** For unit testing purposes only*/
   friend class TestNelderMead;
  public:
   /**

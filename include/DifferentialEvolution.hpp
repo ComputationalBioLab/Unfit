@@ -43,6 +43,7 @@ namespace Unfit
  */
 class DifferentialEvolution : public GenericOptimizer
 {
+  /** For unit testing purposes only*/
   friend class TestDifferentialEvolution;
  public:
   /**

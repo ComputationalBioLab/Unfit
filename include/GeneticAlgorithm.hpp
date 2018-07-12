@@ -46,6 +46,7 @@ namespace Unfit
  */
 class GeneticAlgorithm : public GenericOptimizer
 {
+  /** For unit testing purposes only*/
   friend class TestGeneticAlgorithm;
  public:
   /**

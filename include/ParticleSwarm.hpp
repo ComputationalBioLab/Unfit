@@ -50,6 +50,7 @@ namespace Unfit
  */
 class ParticleSwarm : public GenericOptimizer
 {
+  /** For unit testing purposes only*/
   friend class TestParticleSwarm;
  public:
   /**

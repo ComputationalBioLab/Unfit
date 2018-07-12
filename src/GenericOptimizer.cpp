@@ -114,7 +114,7 @@ bool GenericOptimizer::CalculateCost(GenericCostFunction &CostFunction,
   }
   if (options.GetCostNormType() == 1u) {
     // L1 norm: sum of absolute residuals
-    x.back() = std::accumulate(begin(residuals), end(residuals),0.0,
+    x.back() = std::accumulate(begin(residuals), end(residuals), 0.0,
         [](double a, double b) {return a + std::fabs(b);});
   } else {
     // L2 norm: sum of squared residuals

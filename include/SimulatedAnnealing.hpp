@@ -45,6 +45,7 @@ namespace Unfit
  */
 class SimulatedAnnealing : public GenericOptimizer
 {
+  /** For unit testing purposes only*/
   friend class TestSimulatedAnnealing;
  public:
   /**

@@ -213,10 +213,12 @@ TEST(Bounds_SetOneBoundErrorCases)
   Unfit::Bounds some_bounds(3);
 
   // Negative infinite bound
-  CHECK(!some_bounds.SetBounds(2, -std::numeric_limits<double>::infinity(), 1.0));
+  CHECK(!some_bounds.SetBounds(2, -std::numeric_limits<double>::infinity(),
+      1.0));
 
   // Positive infinite bound
-  CHECK(!some_bounds.SetBounds(2, 0.0, std::numeric_limits<double>::infinity()));
+  CHECK(!some_bounds.SetBounds(2, 0.0,
+      std::numeric_limits<double>::infinity()));
 
   // Lower bound > upper bound
   CHECK(!some_bounds.SetBounds(2, 1.0, 0.0));
