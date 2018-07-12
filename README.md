@@ -64,8 +64,9 @@ As per the above note to Visual Studio users, this random number issue also appe
 
 ### Contributing
 
-We are serious about this being around for a long time and hopefully becoming useful to more and more people. After much study, we have decided to require contributing license agreements (CLAs) from our contributors to keep our work open. Our CLA is adapted directly from the one used by the Apache Foundation, and can be found [here](https://computationalbiolab.github.io/). If you are interested in how a CLA protects you as well as us, a good explanation is given [here](https://julien.ponge.org/blog/in-defense-of-contributor-license-agreements/). In case you can't be bothered reading the whole thing, here is our summary of the key points of the CLA:
+We are serious about this being around for a long time and hopefully becoming useful to more and more people. After much study, we have decided to require contributing license agreements (CLAs) from our contributors to keep our work open. Our CLA is adapted directly from the one used by the Apache Foundation, and can be found [here](https://computationalbiolab.github.io/assets/cla/IndividualContributorLicenseAgreement.pdf). If you are interested in how a CLA protects you as well as us, a good explanation is given [here](https://julien.ponge.org/blog/in-defense-of-contributor-license-agreements/). In case you can't be bothered reading the whole thing, here is our summary of the key points of the CLA:
 
+1. (Just definitions)
 2. You still own what you contribute, and can do **whatever you want** with it, but you allow us to use it forever, so we don't have to worry that you will change your mind and take it back
 3. You promise you are not going to contribute something, then patent it and come after us for patent infringement
 4. You are allowed to contribute what you are contributing
