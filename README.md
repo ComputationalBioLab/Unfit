@@ -3,6 +3,8 @@ Data fitting and optimization software
 
 ### Getting Started (User Version)
 
+The *User* version will build Unfit and run a simple example with the different optimisers. You can use this to build Unfit as a library too.
+
 1. Download & install Code::Blocks (http://www.codeblocks.org/).
    Note: if you are on Windows, choose the version with GCC (mingw)
 2. Download Unfit, e.g.
@@ -14,7 +16,9 @@ Data fitting and optimization software
 3. Start Code::Blocks and open the Unfit project file (Unfit.cbp)
 4. Build & Run
 
-### Getting Started (Development Version)
+### Getting Started (Testing Version)
+
+The *Testing* version will build Unfit and run all of the unit tests we use to check Unfit along with a decent number of examples that include fitting different types of problems. You can also use this to build Unfit as a library (does not include the tests).
 
 1. Download & install Code::Blocks (http://www.codeblocks.org/).
    Note: if you are on Windows, choose the version with GCC (mingw)
@@ -29,12 +33,12 @@ Data fitting and optimization software
 4. Build (this should create Debug and Release libraries by default).
    Note: you only need to do this the first time you want to compile Unfit
 5. Close the UnitTest++ project
-6. Open the Unfit development project file (Unfit-devel.cbp)
+6. Open the Unfit test project file (TestUnfit.cbp)
 7. Build & Run
 
 ### What Now?
 
-Create your own cost functions so you can minimise what is important to you. Even if you don't want to compile the development version, it may be useful to have a look at the test examples to get ideas as to how to code up your custom cost functions. 
+Create your own cost functions so you can minimise what is important to you. Even if you don't want to compile the test version, it may be useful to have a look at the examples to get ideas as to how to code up your custom cost functions. 
 
 We have created a new tutorial which provides a step by step guide to writing your own cost functions from scratch. We have also created another new tutorial to explain how to write your own optimizer using the Unfit framework. Both of these are available from the Unfit website.
 
