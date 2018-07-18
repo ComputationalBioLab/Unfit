@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Unfit-devel" />
+		<Option title="TestUnfit" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/Unfit-devel" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/TestUnfit" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -45,7 +45,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/Unfit-devel" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/TestUnfit" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -249,7 +249,7 @@
 		<Unit filename="src/Options.cpp" />
 		<Unit filename="src/ParticleSwarm.cpp" />
 		<Unit filename="src/SimulatedAnnealing.cpp" />
-		<Unit filename="src/main-devel.cpp">
+		<Unit filename="src/main-test.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
@@ -315,18 +315,8 @@
 		</Unit>
 		<Extensions>
 			<code_completion />
-			<envvars />
-			<lib_finder disable_auto="1" />
 			<debugger />
-			<DoxyBlocks>
-				<comment_style block="0" line="0" />
-				<doxyfile_project />
-				<doxyfile_build />
-				<doxyfile_warnings />
-				<doxyfile_output />
-				<doxyfile_dot />
-				<general />
-			</DoxyBlocks>
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
