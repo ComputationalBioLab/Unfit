@@ -26,9 +26,9 @@
 					<Add option="-Weffc++" />
 					<Add option="-Wmain" />
 					<Add option="-pedantic" />
-					<Add option="-std=c++0x" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="--coverage" />
 					<Add directory="include" />
@@ -62,7 +62,7 @@
 					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-std=c++0x" />
+					<Add option="-std=c++11" />
 					<Add directory="include" />
 					<Add directory="examples" />
 				</Compiler>
@@ -96,11 +96,12 @@
 					<Add option="-pedantic" />
 					<Add option="-Wextra" />
 					<Add option="-Wall" />
-					<Add option="-std=c++0x" />
+					<Add option="-std=c++11" />
 					<Add option="-fPIC" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
+					<Add option="-s" />
 					<Add library="pthread" />
 				</Linker>
 			</Target>
