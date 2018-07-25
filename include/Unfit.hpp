@@ -31,7 +31,7 @@
 #include "SimulatedAnnealing.hpp"
 
 /**
- * \mainpage Welcome to Unfit 3.0: Data fitting and optimization software
+ * \mainpage Welcome to Unfit 3.2: Data fitting and optimization software
  *
  * Does Matlab's fminsearch solve your problems but run too slow? Does Scilab
  * handle your problems but runs even slower? Unfit may be the solution you are
