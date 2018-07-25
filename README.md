@@ -40,7 +40,7 @@ The *Testing* version will build Unfit and run all of the unit tests we use to c
 
 Create your own cost functions so you can minimise what is important to you. Even if you don't want to compile the test version, it may be useful to have a look at the examples to get ideas as to how to code up your custom cost functions. 
 
-We have created a new tutorial which provides a step by step guide to writing your own cost functions from scratch. We have also created another new tutorial to explain how to write your own optimizer using the Unfit framework. Both of these are available from the Unfit website.
+We have created a [tutorial](https://computationalbiolab.github.io/assets/pdf/unfit_tutorial.pdf) which provides a step by step guide to writing your own cost functions from scratch. In case you are interested, we have also created another [tutorial](https://computationalbiolab.github.io/assets/pdf/unfit_write_an_optimizer_tutorial.pdf) to explain how to write your own optimizer using the Unfit framework. Both of these are available from the Unfit website.
 
 ### Development Environment
 
