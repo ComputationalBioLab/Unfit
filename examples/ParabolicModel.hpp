@@ -40,7 +40,7 @@ namespace Examples
  * we could write this function in the form y = f(x), where x & y are our two
  * variables.
  */
-class Parabolic : public GenericNDModel
+class ParabolicModel : public GenericNDModel
 {
  public:
   /**
