@@ -19,8 +19,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef GENERICNDMODEL_HPP_
-#define GENERICNDMODEL_HPP_
+#ifndef UNFIT_INCLUDE_GENERICNDMODEL_HPP_
+#define UNFIT_INCLUDE_GENERICNDMODEL_HPP_
 
 #include <vector>
 
@@ -77,4 +77,4 @@ class GenericNDModel
 
 }  // namespace Unfit
 
-#endif  // GENERICNDMODEL_HPP_
+#endif  // UNFIT_INCLUDE_GENERICNDMODEL_HPP_

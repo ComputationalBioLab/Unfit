@@ -19,8 +19,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef GENERICNDCOSTFUNCTION_HPP_
-#define GENERICNDCOSTFUNCTION_HPP_
+#ifndef UNFIT_INCLUDE_GENERICNDCOSTFUNCTION_HPP_
+#define UNFIT_INCLUDE_GENERICNDCOSTFUNCTION_HPP_
 
 #include <vector>
 #include "GenericNDModel.hpp"
@@ -152,4 +152,4 @@ class GenericNDCostFunction : public Unfit::GenericCostFunction
 
 }  // namespace Unfit
 
-#endif  // GENERICNDCOSTFUNCTION_HPP_
+#endif  // UNFIT_INCLUDE_GENERICNDCOSTFUNCTION_HPP_
