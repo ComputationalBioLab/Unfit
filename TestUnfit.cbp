@@ -180,6 +180,10 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="examples/ParabolicModel.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="examples/Powell.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />
