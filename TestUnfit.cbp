@@ -128,6 +128,10 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="examples/CardiacAlphaNModel.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="examples/Exponential.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />
@@ -281,6 +285,10 @@
 			<Option target="Release" />
 		</Unit>
 		<Unit filename="unittests/TestFunctions.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="unittests/TestGenericNDCostFunction.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
