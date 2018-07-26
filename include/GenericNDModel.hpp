@@ -1,8 +1,31 @@
+// Unfit: Data fitting and optimization software
+//
+// Copyright (C) 2012- Dr Martin Buist & Dr Alberto Corrias
+// Contacts: martin.buist _at_ nus.edu.sg; alberto _at_ nus.edu.sg
+//
+// See the 'Contributors' file for a list of those who have contributed
+// to this work.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 #ifndef GENERICNDMODEL_HPP_
 #define GENERICNDMODEL_HPP_
 
 #include <vector>
 
+namespace Unfit
+{
 /**
  * This class provides an interface to what we call an n-dimensional, or ND
  * model. What is a ND model? The simplest way to think of it is to consider a
@@ -51,5 +74,7 @@ class GenericNDModel
   virtual std::vector<double> operator()(const std::vector<double> &c,
       const std::vector<std::vector<double>> &x) = 0;
 };
+
+}  // namespace Unfit
 
 #endif  // GENERICNDMODEL_HPP_

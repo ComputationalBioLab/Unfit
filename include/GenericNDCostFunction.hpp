@@ -1,3 +1,24 @@
+// Unfit: Data fitting and optimization software
+//
+// Copyright (C) 2012- Dr Martin Buist & Dr Alberto Corrias
+// Contacts: martin.buist _at_ nus.edu.sg; alberto _at_ nus.edu.sg
+//
+// See the 'Contributors' file for a list of those who have contributed
+// to this work.
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 #ifndef GENERICNDCOSTFUNCTION_HPP_
 #define GENERICNDCOSTFUNCTION_HPP_
 
@@ -5,6 +26,8 @@
 #include "GenericNDModel.hpp"
 #include "GenericCostFunction.hpp"
 
+namespace Unfit
+{
 /**
  * This class acts as a cost function for any ND model, i.e., a model that
  * derives from the GenericNDModel class. For example, you can pass your model
@@ -126,5 +149,7 @@ class GenericNDCostFunction : public Unfit::GenericCostFunction
   /** Store if valid data has been successfully added to the cost function */
   bool has_data_;
 };
+
+}  // namespace Unfit
 
 #endif  // GENERICNDCOSTFUNCTION_HPP_
