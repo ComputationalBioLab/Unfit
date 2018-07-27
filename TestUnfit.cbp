@@ -196,6 +196,10 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="examples/SimpleParabolicCostFunction.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="examples/TestExamples.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
