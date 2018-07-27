@@ -89,6 +89,30 @@ TEST(MinimiseATrickyFunctionNoData)
   CHECK_CLOSE(0.0, c[2], 1e-3);
 }
 
+TEST(TwoDimensionOneParameterModel_StraightLine)
+{
+//  // Set the experimental data
+//  std::vector<std::vector<double>> x {{0.498531, 0.622145, 0.746551, 0.899687,
+//      0.995019, 1.24803, 1.49695, 1.7464, 1.86737, 1.92478, 2.07206, 2.12789,
+//      2.23212}};
+//  std::vector<double> y {17.0676, 20.0356, 24.0914, 27.5963, 28.9598, 31.9736,
+//      34.6866, 33.7931, 31.9415, 30.6897, 28.3853, 23.9687, 18.5146};
+//  // Make ourselves an object of the desired model type, in this case a parabola
+//  Unfit::Examples::ParabolicModel parabola;
+//  // We want to fit the data by optimizing our parameters, so we need a function
+//  // to calculate the cost of our model given this data set (x, y)
+//  Unfit::GenericNDCostFunction parabola_cost(parabola, x, y);
+//  // Choose an initial guess for our parameters (c0, c1, c2)
+//  std::vector<double> c {1.0, 1.0, 1.0};
+//
+//  // Try the Nelder-Mead simplex optimisation algorithm
+//  Unfit::NelderMead nm_opt;
+//  // Pass in the cost function and our initial guess for c
+//  auto rc = nm_opt.FindMin(parabola_cost, c);
+//  // Check the optimiser came back with a converged solution
+//  CHECK_EQUAL(0, rc);
+}
+
 TEST(ReadDataFromFileAndOptimise)
 {
   // Read in the experimental data; first create the DataFileReader
