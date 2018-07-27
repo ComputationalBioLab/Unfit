@@ -363,7 +363,7 @@ TEST(GeneticAlgorithm_HodgkinHuxleyBetaN)  // From Unfit 1
   std::vector<double> vm;
   std::vector<double> beta_n;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/expdata.txt"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/hh_beta_n_data.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, vm));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, beta_n));
   CHECK_EQUAL(vm.size(), beta_n.size());

@@ -185,14 +185,14 @@ TEST(StraightLine_ReadDataFromFile)
   CHECK_EQUAL(0, rc2);
 }
 
-// ---------------------------
-
-
-TEST(TwoDimensionTwoParameterModel)
+// This example comes from data digitised from Hodgin & Huxley's 1952 model of
+// a squid axon. Here we read in the data and fit a two parameter exponential
+// model to it.
+TEST(TwoDimensionTwoParameterModelMoreData)
 {
   // Read in the experimental data
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/parabolic_data.txt")); //!!!!!
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/hh_beta_n_data.txt"));
   std::vector<std::vector<double>> x(1);
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, x[0]));
   std::vector<double> y;
@@ -215,6 +215,8 @@ TEST(TwoDimensionTwoParameterModel)
   CHECK_EQUAL(0, rc);
 }
 
+// This example comes from data digitised from a cardiac ion channel. Here we
+// read in the data and fit a three parameter logistic sigmoid function to it.
 TEST(TwoDimensionThreeParameterModel)
 {
   // Set the experimental data
@@ -239,4 +241,7 @@ TEST(TwoDimensionThreeParameterModel)
   // Check the optimiser came back with a converged solution
   CHECK_EQUAL(0, rc);
 }
+
+// Add NonStationaryMarkov to show a 3D model.
+
 }  // suite UnfitExamples
