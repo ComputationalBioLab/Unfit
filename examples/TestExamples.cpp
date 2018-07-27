@@ -26,6 +26,7 @@
 #include "HodgkinHuxleyBetaNModel.hpp"
 #include "LinearCostFunction.hpp"
 #include "LinearModel.hpp"
+#include "NonstationaryMarkovModel.hpp"
 #include "ParabolicModel.hpp"
 #include "SimpleParabolicCostFunction.hpp"
 #include "Unfit.hpp"
@@ -242,6 +243,34 @@ TEST(TwoDimensionThreeParameterModel)
   CHECK_EQUAL(0, rc);
 }
 
-// Add NonStationaryMarkov to show a 3D model.
+// This model is a bit more complex. Here we have a 3D model, eta = f(t, vm),
+// or if you would like it in a more generic way, y = f(x0, x1). Have a look at
+// the header file to see the function - it is a type of probability
+// distribution. You can see that apart from a few more lines of code organising
+// the data, nothing else changes as the model becomes more difficult.
+TEST(ThreeDimensionFourParameterModel)
+{
+  // Read in the experimental data
+  Unfit::DataFileReader<double> dfr;
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/nonstationary_markov_data.txt"));
+  // We need to initialise our x with the number of x dimensions we have
+  std::vector<std::vector<double>> x(2);
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(0, x[0]));  // time = x[0]
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(1, x[1]));  // vm = x[1]
+  std::vector<double> eta;
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(2, eta));
+  CHECK_EQUAL(x[0].size(), eta.size());
+  CHECK_EQUAL(x[1].size(), eta.size());
 
+  // Create the model then the cost function with our data
+  Unfit::Examples::NonstationaryMarkovModel nsm;
+  Unfit::GenericNDCostFunction nsm_cost(nsm, x, eta);
+  // The initial guess for our model parameters
+  std::vector<double> c {10.0, 10.0, 1.0, 1.0};
+
+  // Find the best fit parameters
+  Unfit::NelderMead nm;
+  auto rc = nm.FindMin(nsm_cost, c);
+  CHECK_EQUAL(0, rc);
+}
 }  // suite UnfitExamples
