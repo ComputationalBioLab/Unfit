@@ -715,7 +715,7 @@ TEST(GeneticAlgorithm_Parabolic)
   std::vector<double> x;
   std::vector<double> y;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/parabolic_exp_data.dat"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/parabolic_data.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, x));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, y));
   CHECK_EQUAL(x.size(), y.size());
