@@ -19,8 +19,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef UNFIT_EXAMPLES_PARABOLICMODEL_HPP_
-#define UNFIT_EXAMPLES_PARABOLICMODEL_HPP_
+#ifndef UNFIT_EXAMPLES_LINEARMODEL_HPP_
+#define UNFIT_EXAMPLES_LINEARMODEL_HPP_
 
 #include <vector>
 #include "GenericNDModel.hpp"
@@ -30,27 +30,27 @@ namespace Unfit
 namespace Examples
 {
 /**
- * A model of a parabola, which has three parameters. The function is given by:
+ * A model of a straight line, which has two parameters. The function is
+ * given by:
  *
- *   f(x) = c0*x*x + c1*x + c2
+ *   f(x) = c0*x + c1
  *
- * In terms of terminology, we have a three parameter two-dimensional model. The
- * three parameters come from us having three c's (c0, c1, c2). The
- * two-dimensional part comes from us having a function of two variables, i.e.,
- * we could write this function in the form y = f(x), where x & y are our two
- * variables.
+ * In terms of terminology, we have a two parameter two-dimensional model. The
+ * two parameters come from us having two c's (c0, c1). The two-dimensional part
+ * comes from us having a function of two variables, i.e., we could write this
+ * function in the form y = f(x), where x & y are our two variables.
  */
-class ParabolicModel : public GenericNDModel
+class LinearModel : public GenericNDModel
 {
  public:
   /**
-   * Given estimates of the parameters c0, c1, and c2, plus a vector containing
+   * Given estimates of the parameters c0, and c1, plus a vector containing
    * the x-coordinates/values of interest, this method will evaluate the model
-   * f(x) = c0*x*x + c1*x + c2 at each x, and return a vector containing the
-   * a value for f(x) for each x.
+   * f(x) = c0*x + c1 at each x, and return a vector containing the a value for
+   * f(x) for each x.
    *
-   * In terms of the code, our values for c0, c1 & c2 are stored in c[0], c[1],
-   * and c[2], respectively.The x coordinates at which we want to evaluate the
+   * In terms of the code, our values for c0 and c1 are stored in c[0] and c[1],
+   * respectively.The x coordinates at which we want to evaluate the
    * model at are stored in a vector in x[0] (x is a vector of vectors), meaning
    * the values can be accessed at x[0][0], x[0][1], x[0][...] etc.
    *
@@ -70,12 +70,12 @@ class ParabolicModel : public GenericNDModel
     //
     //    std::vector<double> model(x[0].size());
     //    for (auto i = 0u; i < x.size(); ++i) {
-    //      model[i] = c[0]*x[0][i]*x[0][i] + c[1]*x[0][i] + c[2];
+    //      model[i] = c[0]*x[0][i] + c[1];
     //    }
     //
     auto model = x[0];
     for (auto &mx : model) {
-      mx = c[0]*mx*mx + c[1]*mx + c[2];
+      mx = c[0]*mx + c[1];
     }
     return model;
   }
@@ -84,4 +84,4 @@ class ParabolicModel : public GenericNDModel
 }  // namespace Examples
 }  // namespace Unfit
 
-#endif  // UNFIT_EXAMPLES_PARABOLICMODEL_HPP_
+#endif  // UNFIT_EXAMPLES_LINEARMODEL_HPP_

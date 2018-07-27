@@ -160,6 +160,14 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="examples/LinearCostFunction.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="examples/LinearModel.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="examples/Modroslam.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />
