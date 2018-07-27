@@ -30,6 +30,7 @@
 #include "GaussianEquation.hpp"
 #include "GeneticSwitch.hpp"
 #include "HelicalValleyCostFunction.hpp"
+#include "Himmelblau.hpp"
 #include "HodgkinHuxleyBetaN.hpp"
 #include "Matrix.hpp"
 #include "Modroslam.hpp"
@@ -180,6 +181,32 @@ TEST(LevenbergMarquardt_Gaussian)
   CHECK_CLOSE(12.5486, min_point[3], 1e-4);
 }
 
+TEST(LevenbergMarquardt_GaussianWithBounds)
+{
+  Unfit::LevenbergMarquardt test;
+  test.bounds.SetBounds({1.1, 2.1, 3.1, 0.1}, {10.0, 10.0, 10.0, 10.0});
+  test.options.SetMaxIterations(30000);
+  test.options.SetCostTolerance(1e-8);
+  std::vector<double> x {-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0, 2.0, 3.0, 4.0,
+                         5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
+  std::vector<double> y {0.0657285286165, 0.135335283236, 0.249352208777,
+                         0.411112290507,  0.606530659712, 0.800737402916,
+                         0.945959468906,  1.0, 0.945959468906, 0.800737402916,
+                         0.606530659712, 0.411112290507, 0.249352208777,
+                         0.135335283236, 0.0657285286165, 0.0285655007845};
+  Unfit::Examples::GaussianEquation gauss_eq(x, y);
+  std::vector<double> init_guess {1.5, 2.7, 3.3, 7.0};
+  int rc = test.FindMin(gauss_eq, init_guess);
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(1.1, init_guess[0], 1e-4);
+  CHECK_CLOSE(2.1, init_guess[1], 1e-4);
+  CHECK_CLOSE(3.1, init_guess[2], 1e-4);
+  CHECK_CLOSE(0.1, init_guess[3], 1e-4);
+  auto residual = gauss_eq(init_guess);
+  auto sum_sq_residual = Unfit::SumOfSquares(residual);
+  CHECK_CLOSE(0.441077, sum_sq_residual, 1e-4);
+}
+
 TEST(LevenbergMarquardt_GeneticSwitch)
 {
   Unfit::LevenbergMarquardt lm;
@@ -248,6 +275,63 @@ TEST(LevenbergMarquardt_GeneticSwitch)
 //  CHECK_CLOSE(0.0, min_point[1], 1e-3);
 //  CHECK_CLOSE(0.0, min_point[2], 1e-3);
 //}
+
+TEST(LevenbergMarquardt_Himmelblau)
+{
+  Unfit::LevenbergMarquardt object;
+  Unfit::Examples::Himmelblau cost_func;
+  object.options.SetCostTolerance(1e-24);
+  // Initial guess
+  std::vector<double> min_point = {2.0, 3.0};
+  // Check the function calculates the correct cost at the initial guess
+  std::vector<double> residual = cost_func(min_point);
+  double sum {0.0};
+  for (unsigned i = 0; i < residual.size(); ++i) sum += residual[i]*residual[i];
+  CHECK_CLOSE(512, sum, 1e-4);
+  // Minimise
+  auto rc = object.FindMin(cost_func, min_point);
+  // Check the result matches what we expect
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(3.0, min_point[0], 1e-3);
+  CHECK_CLOSE(2.0, min_point[1], 1e-3);
+}
+
+TEST(LevenbergMarquardt_Himmelblau1)
+{
+  Unfit::LevenbergMarquardt object;
+  Unfit::Examples::Himmelblau cost_func;
+  object.options.SetCostTolerance(1e-16);
+  // Initial guess
+  std::vector<double> min_point = {-2.0, -3.0};
+  // Check the function calculates the correct cost at the initial guess
+  std::vector<double> residual = cost_func(min_point);
+  double sum {0.0};
+  for (unsigned i = 0; i < residual.size(); ++i) sum += residual[i]*residual[i];
+  CHECK_CLOSE(10000, sum, 1e-4);
+  // Minimise
+  auto rc = object.FindMin(cost_func, min_point);
+  // Check the result matches what we expect
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-3.77931, min_point[0], 1e-4);
+  CHECK_CLOSE(-3.28319, min_point[1], 1e-4);
+}
+
+TEST(LevenbergMarquardt_HimmelblauWithBounds)
+{
+  Unfit::LevenbergMarquardt object;
+  object.options.SetMaxIterations(300000);
+  object.bounds.SetBounds({-10.0, -10.0}, {2.9, 1.9});
+  object.options.SetCostTolerance(1e-24);
+  Unfit::Examples::Himmelblau cost_func;
+  // Initial guess
+  std::vector<double> min_point = {-0.3, -2.0};
+  // Minimise
+  int rc = object.FindMin(cost_func, min_point);
+  // Check the result matches what we expect
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-3.77931, min_point[0], 1e-3);
+  CHECK_CLOSE(-3.283186, min_point[1], 1e-3);
+}
 
 TEST(LevenbergMarquardt_HodgkinHuxleyBetaN)
 {
@@ -502,6 +586,29 @@ TEST(LevenbergMarquardt_Parabolic)
   CHECK_CLOSE(-21.1144, min_point[0], 1e-2);
   CHECK_CLOSE(61.0351, min_point[1], 1e-2);
   CHECK_CLOSE(-9.61397, min_point[2], 1e-2);
+}
+
+TEST(LevenbergMarquardt_ParabolicWithBounds)
+{
+  Unfit::LevenbergMarquardt test;
+  test.bounds.SetBounds({0.0, 0.0, 0.0}, {0.9, 1.9, 2.9});
+  // test.SetStepSize(0.001);
+  test.options.SetMaxIterations(30000);
+  test.options.SetCostTolerance(1e-8);
+  std::vector<double> x {-5.0,-4.0,-3.0,-2.0,-1.0,0.0,1.0,2.0,3.0,4.0,5.0};
+  std::vector<double> y {18.0,11.0,6.0,3.0,2.0,3.0,6.0,11.0,18.0,27.0,38.0};
+  Unfit::Examples::Parabolic para_eq(x, y);
+  std::vector<double> init_guess {0, 0, 0};
+  int rc = test.FindMin(para_eq, init_guess);
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(0.9, init_guess[0], 1e-8);
+  CHECK_CLOSE(1.9, init_guess[1], 1e-4);
+  CHECK_CLOSE(2.9, init_guess[2], 1e-4);
+
+  // Check the function calculates the correct cost at the initial guess
+  std::vector<double> residual = para_eq({0.9, 1.9, 2.9});
+  auto sum_sq_residual = Unfit::SumOfSquares(residual);
+  CHECK_CLOSE(22.99, sum_sq_residual, 1e-4);
 }
 
 TEST(LevenbergMarquardt_Powell)  // From LEVMAR
