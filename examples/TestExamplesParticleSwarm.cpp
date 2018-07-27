@@ -29,7 +29,7 @@
 #include "Exponential.hpp"
 #include "GaussianEquation.hpp"
 #include "GeneticSwitch.hpp"
-#include "HelicalValley.hpp"
+#include "HelicalValleyCostFunction.hpp"
 #include "HodgkinHuxleyBetaN.hpp"
 #include "Matrix.hpp"
 #include "Modroslam.hpp"
@@ -247,14 +247,13 @@ TEST(ParticleSwarm_HelicalValley)  // From LEVMAR
   ps.bounds.SetBounds(1, -10.0, 10.0);
   ps.bounds.SetBounds(2, -10.0, 10.0);
   // Create the cost function
-  Unfit::Examples::HelicalValley cost_func;
+  Unfit::Examples::HelicalValleyCostFunction cost_func;
 
   // Initial guess
   std::vector<double> min_point {-1.0, 0.0, 0.0};
   // Check the function calculates the correct cost at the initial guess
   auto residual = cost_func(min_point);
-  auto sum_sq_residual = Unfit::SumOfSquares(residual);
-  CHECK_CLOSE(2500.0, sum_sq_residual, 1e-8);
+  CHECK_CLOSE(2500.0, residual[0], 1e-8);
 
   // Minimise
   auto t1 = hrclock_t::now();  // Start time

@@ -144,7 +144,7 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="examples/HelicalValley.hpp">
+		<Unit filename="examples/HelicalValleyCostFunction.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>

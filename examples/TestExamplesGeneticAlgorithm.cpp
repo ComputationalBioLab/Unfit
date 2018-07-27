@@ -30,7 +30,7 @@
 #include "GaussianEquation.hpp"
 #include "GeneticAlgorithm.hpp"
 #include "GeneticSwitch.hpp"
-#include "HelicalValley.hpp"
+#include "HelicalValleyCostFunction.hpp"
 #include "HodgkinHuxleyBetaN.hpp"
 #include "LevenbergMarquardt.hpp"
 #include "Matrix.hpp"
@@ -330,14 +330,13 @@ TEST(GeneticAlgorithm_HelicalValley)  // From LEVMAR
   ga.options.SetMaxFunctionEvaluations(1000000);
   ga.options.SetCostTolerance(1e-4);
   // Create the cost function
-  Unfit::Examples::HelicalValley cost_func;
+  Unfit::Examples::HelicalValleyCostFunction cost_func;
 
   // Initial guess
   std::vector<double> min_point {-1.0, 0.0, 0.0};
   // Check the function calculates the correct cost at the initial guess
   auto residual = cost_func(min_point);
-  auto sum_sq_residual = Unfit::SumOfSquares(residual);
-  CHECK_CLOSE(2500.0, sum_sq_residual, 1e-8);
+  CHECK_CLOSE(2500.0, residual[0], 1e-8);
 
   // Minimise
   auto t1 = hrclock_t::now();  // Start time
@@ -348,9 +347,9 @@ TEST(GeneticAlgorithm_HelicalValley)  // From LEVMAR
 
   // Check the result matches what we expect
   CHECK_EQUAL(0, rc);
-  CHECK_CLOSE(1.0, min_point[0], 1e-2);
-  CHECK_CLOSE(0.0, min_point[1], 1e-2);
-  CHECK_CLOSE(0.0, min_point[2], 1e-2);
+  CHECK_CLOSE(1.0, min_point[0], 0.01);
+  CHECK_CLOSE(0.0, min_point[1], 0.04);
+  CHECK_CLOSE(0.0, min_point[2], 0.06);
 }
 
 TEST(GeneticAlgorithm_HodgkinHuxleyBetaN)  // From Unfit 1

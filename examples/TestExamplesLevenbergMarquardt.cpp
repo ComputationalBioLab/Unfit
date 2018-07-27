@@ -29,7 +29,7 @@
 #include "Exponential.hpp"
 #include "GaussianEquation.hpp"
 #include "GeneticSwitch.hpp"
-#include "HelicalValley.hpp"
+#include "HelicalValleyCostFunction.hpp"
 #include "HodgkinHuxleyBetaN.hpp"
 #include "Matrix.hpp"
 #include "Modroslam.hpp"
@@ -218,32 +218,36 @@ TEST(LevenbergMarquardt_GeneticSwitch)
   CHECK_CLOSE(-0.226712906915202, min_point[3], 1e-3);
 }
 
-TEST(LevenbergMarquardt_HelicalValley)  // From LEVMAR
-{
-  Unfit::LevenbergMarquardt lm;
-  // Create the cost function
-  Unfit::Examples::HelicalValley cost_func;
-
-  // Initial guess
-  std::vector<double> min_point {-1.0, 0.0, 0.0};
-  // Check the function calculates the correct cost at the initial guess
-  auto residual = cost_func(min_point);
-  auto sum_sq_residual = Unfit::SumOfSquares(residual);
-  CHECK_CLOSE(2500.0, sum_sq_residual, 1e-8);
-
-  // Minimise
-  auto t1 = hrclock_t::now();  // Start time
-  auto rc = lm.FindMin(cost_func, min_point);
-  auto t2 = hrclock_t::now();  // End time
-  std::cout << TestTime(t1, t2) << "HelicalValley (LevenbergMarquardt)";
-  std::cout << std::endl;
-
-  // Check the result matches what we expect
-  CHECK_EQUAL(0, rc);
-  CHECK_CLOSE(1.0, min_point[0], 1e-3);
-  CHECK_CLOSE(0.0, min_point[1], 1e-3);
-  CHECK_CLOSE(0.0, min_point[2], 1e-3);
-}
+// Cannot test this one any more as we are now only returning one residual from
+// our three parameter problem, and LM requires three residuals. One option
+// would be to make a HelicalValleyLM which returns a vector containing three
+// copies of the residual...
+//
+//TEST(LevenbergMarquardt_HelicalValley)
+//{
+//  Unfit::LevenbergMarquardt lm;
+//  // Create the cost function
+//  Unfit::Examples::HelicalValleyCostFunction cost_func;
+//
+//  // Initial guess
+//  std::vector<double> min_point {-1.0, 0.0, 0.0};
+//  // Check the function calculates the correct cost at the initial guess
+//  auto residual = cost_func(min_point);
+//  CHECK_CLOSE(2500.0, residual[0], 1e-8);
+//
+//  // Minimise
+//  auto t1 = hrclock_t::now();  // Start time
+//  auto rc = lm.FindMin(cost_func, min_point);
+//  auto t2 = hrclock_t::now();  // End time
+//  std::cout << TestTime(t1, t2) << "HelicalValley (LevenbergMarquardt)";
+//  std::cout << std::endl;
+//
+//  // Check the result matches what we expect
+//  CHECK_EQUAL(0, rc);
+//  CHECK_CLOSE(1.0, min_point[0], 1e-3);
+//  CHECK_CLOSE(0.0, min_point[1], 1e-3);
+//  CHECK_CLOSE(0.0, min_point[2], 1e-3);
+//}
 
 TEST(LevenbergMarquardt_HodgkinHuxleyBetaN)
 {
