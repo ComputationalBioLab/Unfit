@@ -188,6 +188,14 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="examples/Ode2DModel.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="examples/Ode3DModel.hpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Unit filename="examples/Osborne.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />

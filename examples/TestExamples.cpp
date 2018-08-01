@@ -27,15 +27,12 @@
 #include "LinearCostFunction.hpp"
 #include "LinearModel.hpp"
 #include "NonstationaryMarkovModel.hpp"
+#include "Ode2DModel.hpp"
+#include "Ode3DModel.hpp"
 #include "ParabolicModel.hpp"
 #include "SimpleParabolicCostFunction.hpp"
 #include "Unfit.hpp"
 #include "UnitTest++.h"
-
-#include "Parabolic.hpp"
-#include "GaussianEquation.hpp"
-#include "Himmelblau.hpp"
-#include "Exponential.hpp"
 
 // This file contains a number of examples showing different ways of doing
 // things with Unfit, whether you are doing an optimization, fitting data to
@@ -273,4 +270,140 @@ TEST(ThreeDimensionFourParameterModel)
   auto rc = nm.FindMin(nsm_cost, c);
   CHECK_EQUAL(0, rc);
 }
+
+// This model shows an example of how you could approach a problem that is
+// in the form of an ordinary differential equation (ODE). Here we have a
+// problem of the form dy/dt = f(y), along with some data we want to try to
+// match. Here we choose the forward Euler method to integrate the ODE and
+// thus obtain model values we can compare to the experimental data. Note that
+// as this is an initial value problem, we pass in the initial value for y
+// along with the time step when we construct the model.
+TEST(OrdinaryDifferentialEquationModel)
+{
+  // Read in the experimental data
+  Unfit::DataFileReader<double> dfr;
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/ode_data.txt"));
+  // We need to initialise our t with the number of t dimensions we have
+  std::vector<std::vector<double>> t(1);
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t[0]));
+  std::vector<double> y;
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(1, y));
+
+  // Create the model then the cost function with our data
+  auto ic = 0.0;  // initial condition
+  // Here we will get the time step from the time points in the data file
+  // We could also do this within the model if we wanted to
+  auto dt = t[0][1] - t[0][0];
+  Unfit::Examples::Ode2DModel ode2d(dt, ic);
+  Unfit::GenericNDCostFunction ode2d_cost(ode2d, t, y);
+  // The initial guess for our model parameters
+  std::vector<double> c = {1.0, 1.0};
+
+  // Find the best fit parameters
+  Unfit::NelderMead nm;
+  auto rc = nm.FindMin(ode2d_cost, c);
+  CHECK_EQUAL(0, rc);
+}
+
+// This model shows is a variation of the above ODE example whereby we change
+// two things. First, we assume that we do not know what the initial value
+// should be for our initial value problem. We therefore add it as an additional
+// variable to our optimisation problem. The other change is that we no longer
+// pass in a time step. Instead, this version looks at the times we read in from
+// the data file and uses those to calculated the time step on the fly.
+TEST(OrdinaryDifferentialEquationModelUnknownInitialCondition)
+{
+  // Read in the experimental data
+  Unfit::DataFileReader<double> dfr;
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/ode_data.txt"));
+  // We need to initialise our t with the number of t dimensions we have
+  std::vector<std::vector<double>> t(1);
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t[0]));
+  std::vector<double> y;
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(1, y));
+
+  // Create the model then the cost function with our data
+  Unfit::Examples::Ode3DModel ode3d;
+  Unfit::GenericNDCostFunction ode3d_cost(ode3d, t, y);
+  // The initial guess for our model parameters
+  std::vector<double> c = {1.0, 1.0, 1.0};
+
+  // Find the best fit parameters
+  Unfit::NelderMead nm;
+  auto rc = nm.FindMin(ode3d_cost, c);
+  CHECK_EQUAL(0, rc);
+}
+
+// getting output as you go
+
+
+// working with options, max iter, max func eval, tolerance
+
+
+
+// Sometimes we have a model and we know, for example, that the parameters must
+// be positive. It could be a mechanics problem when we know the material
+// constants must be positive or something else. Unfit provides what are known
+// as Box constraints - you can set an upper and/or lower bound for each
+// parameter. Here we choose a simple parabola with one parameter that has a
+// minimum at x=0, but we impose a lower bound that x must be >2. Note that
+// Unfit will not tell you if you hit a bound, you should check that yourself
+// upon exit.
+TEST(SimpleExampleWithBounds)
+{
+  // Create an object that contains our function
+  Unfit::Examples::SimpleParabolicCostFunction sp_cost;
+  // Choose an initial guess for our parameter (c0)
+  std::vector<double> c {3.0};
+
+  // Try the Levenberg-Marquardt optimisation algorithm
+  Unfit::LevenbergMarquardt lm_opt;
+  // Add a lower bound to our c0 parameter so it must be > 2
+  lm_opt.bounds.SetLowerBound(0, 2.0);
+  // Pass in the cost function and our initial guess for c
+  auto rc = lm_opt.FindMin(sp_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
+  // Check the solution (we know the exact solution in this case)
+  CHECK_CLOSE(2.0, c[0], 1e-3);
+  // (Note that Nelder-Mead will complain about a degenerate simplex for this
+  // example (rc=4), as the simplex collapses on itself at the bound, but it
+  // still gets the correct answer)
+}
+
+// setting upper and lower bounds via vectors
+TEST(ExampleWithUpperAndLowerBounds)
+{
+
+}
+
+// using bounds for global optimisers
+TEST(GlobalOptimizersRequireBounds)
+{
+
+}
+// using hard bounds
+TEST(GlobalOptimizersRelaxBoundsDuringSolution)
+{
+
+}
+
+// adding your initial guess to a population based method
+
+
+// a fast escape from a cost function if something goes wrong
+
+
+// using multi-level optimisation to get close with global then finish with local
+
+// Finding a good initial guess with multi-level, multi-start
+
+// Finding a good initial population with multi-level, multi-start - note MultiThreaded versions
+
+// Using Reset
+
+// ? Changing data in a model, if you have multiple data sets
+
+// Using the different optimisers
+
 }  // suite UnfitExamples
