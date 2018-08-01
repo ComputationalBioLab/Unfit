@@ -51,6 +51,12 @@
 
 SUITE(UnfitExamples)
 {
+// test that matches out tutorial
+
+
+// Using the different optimisers -  unfit.cbp copy?
+
+
 // Here we have no data, no model, just a simple function to minimise, so
 // instead of creating a model, we have to create a cost function directly.
 // In this case our function is just f(c) = |c*c|, a simple parabola.
@@ -334,11 +340,10 @@ TEST(OrdinaryDifferentialEquationModelUnknownInitialCondition)
   CHECK_EQUAL(0, rc);
 }
 
-// getting output as you go
+// getting output as you go. both from the optimiser and finding out model, cost
 
 
-// working with options, max iter, max func eval, tolerance
-
+// working with options, max iter, max func eval, cost, geom tolerance
 
 
 // Sometimes we have a model and we know, for example, that the parameters must
@@ -377,33 +382,29 @@ TEST(ExampleWithUpperAndLowerBounds)
 
 }
 
-// using bounds for global optimisers
+// using bounds for global optimisers. note on DE & PS have soft bounds unless you say hard; others hard.
+// Means all but nm and lm. Others require.
 TEST(GlobalOptimizersRequireBounds)
 {
 
 }
-// using hard bounds
-TEST(GlobalOptimizersRelaxBoundsDuringSolution)
-{
 
-}
-
-// adding your initial guess to a population based method
+// adding your initial guess when using a population based method
 
 
-// a fast escape from a cost function if something goes wrong
+// Changing data in a model, if you have multiple data sets, low res then high res, downsample, reset
 
 
 // using multi-level optimisation to get close with global then finish with local
 
+
 // Finding a good initial guess with multi-level, multi-start
+
 
 // Finding a good initial population with multi-level, multi-start - note MultiThreaded versions
 
-// Using Reset
 
-// ? Changing data in a model, if you have multiple data sets
+// a fast escape from a cost function if something goes wrong ?? Need to be careful, modify the genericNDCostFunction
 
-// Using the different optimisers
 
 }  // suite UnfitExamples
