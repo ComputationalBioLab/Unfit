@@ -390,7 +390,7 @@ TEST(ParticleSwarm_ODE2D)  // From Unfit 1
   std::vector<double> t;
   std::vector<double> x;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/test.txt"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/ode_data.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, x));
   auto dt = t[1] - t[0];
@@ -427,7 +427,7 @@ TEST(ParticleSwarm_ODE3DVariant)  // From Unfit 1
   std::vector<double> t;
   std::vector<double> x;
   Unfit::DataFileReader<double> dfr;
-  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/test.txt"));
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/ode_data.txt"));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t));
   CHECK_EQUAL(0u, dfr.RetrieveColumn(1, x));
   auto dt = t[1] - t[0];
