@@ -23,7 +23,7 @@
 #define UNFIT_EXAMPLES_ODE2DMODEL_HPP_
 
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -47,7 +47,7 @@ namespace Examples
  * value problem, so we require an initial value for y (i.e., y(t=0)) to get
  * started.
  */
-class Ode2DModel : public GenericNDModel
+class Ode2DModel : public GenericModel
 {
  public:
   /**

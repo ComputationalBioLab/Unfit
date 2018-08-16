@@ -23,7 +23,7 @@
 #define UNFIT_EXAMPLES_ODE3DMODEL_HPP_
 
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -51,7 +51,7 @@ namespace Examples
  * you could implement another more sophisticated integration scheme (e.g.
  * Improved Euler or Runge-Kutta) if you wanted to.
  */
-class Ode3DModel : public GenericNDModel
+class Ode3DModel : public GenericModel
 {
  public:
   /**

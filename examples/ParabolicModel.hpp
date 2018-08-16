@@ -23,7 +23,7 @@
 #define UNFIT_EXAMPLES_PARABOLICMODEL_HPP_
 
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -40,7 +40,7 @@ namespace Examples
  * we could write this function in the form y = f(x), where x & y are our two
  * variables.
  */
-class ParabolicModel : public GenericNDModel
+class ParabolicModel : public GenericModel
 {
  public:
   /**

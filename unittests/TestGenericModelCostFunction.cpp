@@ -21,7 +21,7 @@
 //
 #include <vector>
 #include "CardiacAlphaNModel.hpp"
-#include "GenericNDCostFunction.hpp"
+#include "GenericModelCostFunction.hpp"
 #include "UnitTest++.h"
 
 static const double tolerance {1.0e-6};
@@ -30,14 +30,14 @@ namespace Unfit
 {
 namespace UnitTests
 {
-SUITE(UnitTestGenericNDCostFunction)
+SUITE(UnitTestGenericModelCostFunction)
 {
-TEST(GenericNDCostFunction_2DResidualCalculation)
+TEST(GenericModelCostFunction_2DResidualCalculation)
 {
   std::vector<double> alpha_n {0.0, 0.05, 0.1, 0.15, 0.2};
   std::vector<std::vector<double>> vm {{-80.0, -40.0, 0.0, 40.0, 80.0}};
   Examples::CardiacAlphaNModel c_alpha_n;
-  GenericNDCostFunction cost_func(c_alpha_n, vm, alpha_n);
+  GenericModelCostFunction cost_func(c_alpha_n, vm, alpha_n);
   std::vector<double> c {1.0, -0.01, 2.0};
   auto residuals = cost_func(c);
   CHECK(residuals.size() == vm[0].size());
@@ -48,12 +48,12 @@ TEST(GenericNDCostFunction_2DResidualCalculation)
   CHECK_CLOSE(-0.031475, residuals[4], tolerance);
 }
 
-TEST(GenericNDCostFunction_SetData2D)
+TEST(GenericModelCostFunction_SetData2D)
 {
   std::vector<double> alpha_n {0.0, 0.05, 0.1, 0.15, 0.2};
   std::vector<std::vector<double>> vm {{-80.0, -40.0, 0.0, 40.0, 80.0}};
   Examples::CardiacAlphaNModel c_alpha_n;
-  GenericNDCostFunction cost_func(c_alpha_n, vm, alpha_n);
+  GenericModelCostFunction cost_func(c_alpha_n, vm, alpha_n);
   vm.clear();
   vm = {{-60.0, -40.0, -20.0, 0.0, 20.0}};
   auto rc = cost_func.SetData(vm, alpha_n);  // change vm
@@ -91,12 +91,12 @@ TEST(GenericNDCostFunction_SetData2D)
   CHECK_CLOSE(0.032018, residuals[5], tolerance);
 }
 
-TEST(Generic2DCostFunction_SetDataEmptyData)
+TEST(GGenericModelCostFunction_SetDataEmptyData)
 {
   std::vector<double> alpha_n {0.0, 0.05, 0.1, 0.15, 0.2};
   std::vector<std::vector<double>> vm {{-80.0, -40.0, 0.0, 40.0, 80.0}};
   Examples::CardiacAlphaNModel c_alpha_n;
-  GenericNDCostFunction cost_func(c_alpha_n, vm, alpha_n);
+  GenericModelCostFunction cost_func(c_alpha_n, vm, alpha_n);
   vm.clear();
   auto rc = cost_func.SetData(vm, alpha_n);  // vm is empty
   CHECK(!rc);
@@ -113,12 +113,12 @@ TEST(Generic2DCostFunction_SetDataEmptyData)
   CHECK(rc);
 }
 
-TEST(Generic2DCostFunction_SetDataWrongSize)
+TEST(GenericModelCostFunction_SetDataWrongSize)
 {
   std::vector<double> alpha_n {0.0, 0.05, 0.1, 0.15, 0.2};
   std::vector<std::vector<double>> vm {{-80.0, -40.0, 0.0, 40.0, 80.0}};
   Examples::CardiacAlphaNModel c_alpha_n;
-  GenericNDCostFunction cost_func(c_alpha_n, vm, alpha_n);
+  GenericModelCostFunction cost_func(c_alpha_n, vm, alpha_n);
   vm[0].pop_back();
   auto rc = cost_func.SetData(vm, alpha_n);  // vm shorter
   CHECK(!rc);

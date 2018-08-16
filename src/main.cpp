@@ -22,7 +22,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "GenericNDCostFunction.hpp"
+#include "GenericModelCostFunction.hpp"
 #include "ParabolicModel.hpp"
 #include "Unfit.hpp"
 
@@ -89,7 +89,7 @@ int main()
   Unfit::Examples::ParabolicModel parabola;
   // We want to fit the data by optimizing our parameters, so we need a function
   // to calculate the cost of our model given this data set (x, y)
-  Unfit::GenericNDCostFunction parabola_cost(parabola, x, y);
+  Unfit::GenericModelCostFunction parabola_cost(parabola, x, y);
   // Choose an initial guess for (c0, c1, c2)
   std::vector<double> c {1.0, 1.0, 1.0};
 

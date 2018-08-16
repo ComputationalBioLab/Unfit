@@ -266,8 +266,8 @@
 		<Unit filename="include/DifferentialEvolution.hpp" />
 		<Unit filename="include/GenerateInitialGuess.hpp" />
 		<Unit filename="include/GenericCostFunction.hpp" />
-		<Unit filename="include/GenericNDCostFunction.hpp" />
-		<Unit filename="include/GenericNDModel.hpp" />
+		<Unit filename="include/GenericModel.hpp" />
+		<Unit filename="include/GenericModelCostFunction.hpp" />
 		<Unit filename="include/GenericOptimizer.hpp" />
 		<Unit filename="include/GeneticAlgorithm.hpp" />
 		<Unit filename="include/LevenbergMarquardt.hpp" />
@@ -279,7 +279,7 @@
 		<Unit filename="src/Bounds.cpp" />
 		<Unit filename="src/ConjugateGradient.cpp" />
 		<Unit filename="src/DifferentialEvolution.cpp" />
-		<Unit filename="src/GenericNDCostFunction.cpp" />
+		<Unit filename="src/GenericModelCostFunction.cpp" />
 		<Unit filename="src/GenericOptimizer.cpp" />
 		<Unit filename="src/GeneticAlgorithm.cpp" />
 		<Unit filename="src/LevenbergMarquardt.cpp" />
@@ -320,7 +320,7 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="unittests/TestGenericNDCostFunction.cpp">
+		<Unit filename="unittests/TestGenericModelCostFunction.cpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>

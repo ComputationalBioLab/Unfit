@@ -21,19 +21,19 @@
 //
 #include <iostream>
 #include <vector>
-#include "GenericNDModel.hpp"
-#include "GenericNDCostFunction.hpp"
+#include "GenericModel.hpp"
+#include "GenericModelCostFunction.hpp"
 
 namespace Unfit
 {
-GenericNDCostFunction::GenericNDCostFunction(GenericNDModel &model)
+GenericModelCostFunction::GenericModelCostFunction(GenericModel &model)
   : model_ {model},
     x_ {},
     y_ {},
     has_data_ {false}
 {}
 
-GenericNDCostFunction::GenericNDCostFunction(GenericNDModel &model,
+GenericModelCostFunction::GenericModelCostFunction(GenericModel &model,
     const std::vector<std::vector<double>> &x, const std::vector<double> &y)
   : model_ {model},
     x_ {x},
@@ -41,7 +41,7 @@ GenericNDCostFunction::GenericNDCostFunction(GenericNDModel &model,
     has_data_ {false}
 {}
 
-std::vector<double> GenericNDCostFunction::operator()(
+std::vector<double> GenericModelCostFunction::operator()(
     const std::vector<double> &c)
 {
   // Need to check the data as we don't check during the constructor
@@ -61,8 +61,8 @@ std::vector<double> GenericNDCostFunction::operator()(
   }
 }
 
-bool GenericNDCostFunction::CheckData(const std::vector<std::vector<double>> &x,
-    const std::vector<double> &y)
+bool GenericModelCostFunction::CheckData(
+    const std::vector<std::vector<double>> &x, const std::vector<double> &y)
 {
   has_data_ = false;
   if (x.empty()) return false;
@@ -76,15 +76,15 @@ bool GenericNDCostFunction::CheckData(const std::vector<std::vector<double>> &x,
   return true;
 }
 
-void GenericNDCostFunction::GetData(std::vector<std::vector<double>> &x,
+void GenericModelCostFunction::GetData(std::vector<std::vector<double>> &x,
     std::vector<double> &y)
 {
   x = x_;
   y = y_;
 }
 
-bool GenericNDCostFunction::SetData(const std::vector<std::vector<double>> &x,
-    const std::vector<double> &y)
+bool GenericModelCostFunction::SetData(
+    const std::vector<std::vector<double>> &x, const std::vector<double> &y)
 {
   auto data_is_okay = CheckData(x, y);
   if (data_is_okay) {

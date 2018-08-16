@@ -24,7 +24,7 @@
 
 #include <cmath>
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -37,7 +37,7 @@ namespace Examples
  *
  *   alpha_n = c0 / [1 + exp(c1*vm + c2)]
  */
-class CardiacAlphaNModel : public GenericNDModel
+class CardiacAlphaNModel : public GenericModel
 {
  public:
   /**

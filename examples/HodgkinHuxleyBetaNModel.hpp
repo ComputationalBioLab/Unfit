@@ -24,7 +24,7 @@
 
 #include <cmath>
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -38,7 +38,7 @@ namespace Examples
  *
  *   beta_n = c0 * exp(c1*vm)
  */
-class HodgkinHuxleyBetaNModel : public GenericNDModel
+class HodgkinHuxleyBetaNModel : public GenericModel
 {
  public:
   /**

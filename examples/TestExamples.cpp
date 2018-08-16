@@ -21,7 +21,7 @@
 //
 #include <vector>
 #include "DataFileReader.hpp"
-#include "GenericNDCostFunction.hpp"
+#include "GenericModelCostFunction.hpp"
 #include "HelicalValleyCostFunction.hpp"
 #include "HodgkinHuxleyBetaNModel.hpp"
 #include "LinearCostFunction.hpp"
@@ -101,9 +101,9 @@ TEST(MinimiseATrickyFunctionNoData)
 }
 
 // When you have a model to fit to some data, we recommend you create the model
-// by deriving from our GenericNDModel class, and then using our
-// GenericNDCostFunction class to turn that into a cost function. We are in the
-// process of developing more useful tools for models...
+// by deriving from our GenericModel class, and then using our
+// GenericModelCostFunction class to turn that into a cost function. We are in
+// the process of developing more useful tools for models...
 TEST(StraightLine_TwoParameterModelWithData)
 {
   // Set the experimental data
@@ -116,7 +116,7 @@ TEST(StraightLine_TwoParameterModelWithData)
   Unfit::Examples::LinearModel linear;
   // We want to fit the data by optimizing our parameters, so we need a function
   // to calculate the cost of our model given this data set (x, y)
-  Unfit::GenericNDCostFunction linear_cost(linear, x, y);
+  Unfit::GenericModelCostFunction linear_cost(linear, x, y);
   // Choose an initial guess for our parameters (c0, c1)
   std::vector<double> c {1.0, 1.0};
 
@@ -177,7 +177,7 @@ TEST(StraightLine_ReadDataFromFile)
   Unfit::Examples::LinearModel linear;
   // We want to fit the data by optimizing our parameters, so we need a function
   // to calculate the cost of our model given this data set (x, y)
-  Unfit::GenericNDCostFunction linear_cost(linear, x, y);
+  Unfit::GenericModelCostFunction linear_cost(linear, x, y);
   // Choose an initial guess for our parameters (c0, c1)
   std::vector<double> c {1.0, 1.0};
 
@@ -207,7 +207,7 @@ TEST(TwoDimensionTwoParameterModelMoreData)
   Unfit::Examples::HodgkinHuxleyBetaNModel hh_beta_n;
   // We want to fit the data by optimizing our parameters, so we need a function
   // to calculate the cost of our model given this data set (x, y)
-  Unfit::GenericNDCostFunction hh_beta_n_cost(hh_beta_n, x, y);
+  Unfit::GenericModelCostFunction hh_beta_n_cost(hh_beta_n, x, y);
   // Choose an initial guess for our parameters (c0, c1)
   std::vector<double> c {1.0, 1.0};
 
@@ -234,7 +234,7 @@ TEST(TwoDimensionThreeParameterModel)
   Unfit::Examples::ParabolicModel parabola;
   // We want to fit the data by optimizing our parameters, so we need a function
   // to calculate the cost of our model given this data set (x, y)
-  Unfit::GenericNDCostFunction parabola_cost(parabola, x, y);
+  Unfit::GenericModelCostFunction parabola_cost(parabola, x, y);
   // Choose an initial guess for our parameters (c0, c1, c2)
   std::vector<double> c {1.0, 1.0, 1.0};
 
@@ -267,7 +267,7 @@ TEST(ThreeDimensionFourParameterModel)
 
   // Create the model then the cost function with our data
   Unfit::Examples::NonstationaryMarkovModel nsm;
-  Unfit::GenericNDCostFunction nsm_cost(nsm, x, eta);
+  Unfit::GenericModelCostFunction nsm_cost(nsm, x, eta);
   // The initial guess for our model parameters
   std::vector<double> c {10.0, 10.0, 1.0, 1.0};
 
@@ -301,7 +301,7 @@ TEST(OrdinaryDifferentialEquationModel)
   // We could also do this within the model if we wanted to
   auto dt = t[0][1] - t[0][0];
   Unfit::Examples::Ode2DModel ode2d(dt, ic);
-  Unfit::GenericNDCostFunction ode2d_cost(ode2d, t, y);
+  Unfit::GenericModelCostFunction ode2d_cost(ode2d, t, y);
   // The initial guess for our model parameters
   std::vector<double> c = {1.0, 1.0};
 
@@ -330,7 +330,7 @@ TEST(OrdinaryDifferentialEquationModelUnknownInitialCondition)
 
   // Create the model then the cost function with our data
   Unfit::Examples::Ode3DModel ode3d;
-  Unfit::GenericNDCostFunction ode3d_cost(ode3d, t, y);
+  Unfit::GenericModelCostFunction ode3d_cost(ode3d, t, y);
   // The initial guess for our model parameters
   std::vector<double> c = {1.0, 1.0, 1.0};
 
@@ -404,7 +404,7 @@ TEST(GlobalOptimizersRequireBounds)
 // Finding a good initial population with multi-level, multi-start - note MultiThreaded versions
 
 
-// a fast escape from a cost function if something goes wrong ?? Need to be careful, modify the genericNDCostFunction
+// a fast escape from a cost function if something goes wrong ?? Need to be careful, modify the GenericModelCostFunction
 
 
 }  // suite UnfitExamples

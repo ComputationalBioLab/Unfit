@@ -24,7 +24,7 @@
 
 #include <cmath>
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -40,7 +40,7 @@ namespace Examples
  * In terms of our nonclemature, this is a 3D model as we have eta = f(vm,t),
  * with four parameters (c0, c1, c2, c3).
  */
-class NonstationaryMarkovModel : public GenericNDModel
+class NonstationaryMarkovModel : public GenericModel
 {
  public:
   /**

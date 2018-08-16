@@ -23,7 +23,7 @@
 #define UNFIT_EXAMPLES_LINEARMODEL_HPP_
 
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -40,7 +40,7 @@ namespace Examples
  * comes from us having a function of two variables, i.e., we could write this
  * function in the form y = f(x), where x & y are our two variables.
  */
-class LinearModel : public GenericNDModel
+class LinearModel : public GenericModel
 {
  public:
   /**

@@ -19,18 +19,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef UNFIT_INCLUDE_GENERICNDCOSTFUNCTION_HPP_
-#define UNFIT_INCLUDE_GENERICNDCOSTFUNCTION_HPP_
+#ifndef UNFIT_INCLUDE_GENERICMODELCOSTFUNCTION_HPP_
+#define UNFIT_INCLUDE_GENERICMODELCOSTFUNCTION_HPP_
 
 #include <vector>
-#include "GenericNDModel.hpp"
+#include "GenericModel.hpp"
 #include "GenericCostFunction.hpp"
 
 namespace Unfit
 {
 /**
- * This class acts as a cost function for any ND model, i.e., a model that
- * derives from the GenericNDModel class. For example, you can pass your model
+ * This class acts as a cost function for any model, i.e., a model that
+ * derives from the GenericModel class. For example, you can pass your model
  * and data to the constructor and a cost function will be created. You can
  * then, for example, pass the result straight to any of the Unfit optimisers to
  * find your model parameters. Of course you could also write your own cost
@@ -42,27 +42,27 @@ namespace Unfit
  * For every data point, i, we will calculate the residual r_i = y_i - f(x_i).
  * The cost of the model is the vector of these residuals.
  */
-class GenericNDCostFunction : public Unfit::GenericCostFunction
+class GenericModelCostFunction : public Unfit::GenericCostFunction
 {
  public:
   /**
    * We require the model to be passed in when we create one of these cost
    * functions, so we must disallow use of the default constructor.
    */
-  GenericNDCostFunction() = delete;
+  GenericModelCostFunction() = delete;
 
   /**
-   * Create a cost function for a GenericNDModel. This requires that we pass in
+   * Create a cost function for a GenericModel. This requires that we pass in
    * the model itself (model). If you use this constructor, make sure you pass
    * the data to the cost function using the SetData function. Without data, it
    * is not possible to calculate the cost of the model.
    *
-   * \param model Your model, made by deriving from GenericNDModel
+   * \param model Your model, made by deriving from GenericModel
    */
-  GenericNDCostFunction(GenericNDModel &model);
+  GenericModelCostFunction(GenericModel &model);
 
   /**
-   * Create a cost function for a Generic2DModel. Here we pass in the model
+   * Create a cost function for a GenericModel. Here we pass in the model
    * itself (model), and the data that we want to use to evaluate the model. For
    * any model, the data takes the form of one or more independent variables
    * (x0, x1, ... , xN) and a dependent variable (y). These could represent any
@@ -73,22 +73,22 @@ class GenericNDCostFunction : public Unfit::GenericCostFunction
    * If they are not, you will get an error when you try to use the data with
    * your model.
    *
-   * \param model Your model, made by deriving from GenericNDModel
+   * \param model Your model, made by deriving from GenericModel
    * \param x A vector of vectors containing the independent variable values
    *          for your data
    * \param y A vector containing the dependent variable values for your data
    */
-  GenericNDCostFunction(GenericNDModel &model,
+  GenericModelCostFunction(GenericModel &model,
       const std::vector<std::vector<double>> &x, const std::vector<double> &y);
 
   /**
    * In case anyone wants to derive from this class in the future the destructor
    * the should be virtual. The default destructor is fine.
    */
-  virtual ~GenericNDCostFunction() = default;
+  virtual ~GenericModelCostFunction() = default;
 
   /**
-   * For any model that follows the interface prescribed by GenericNDModel, this
+   * For any model that follows the interface prescribed by GenericModel, this
    * method takes in a vector of model parameters (c), evaluates the model using
    * these parameters, and calculates the vector of residuals between the model
    * output and the stored data. For each data point, i, the residual is
@@ -141,7 +141,7 @@ class GenericNDCostFunction : public Unfit::GenericCostFunction
 
  private:
   /** Store a reference to the model. */
-  GenericNDModel &model_;
+  GenericModel &model_;
   /** Store the independent variable data so we don't pass it in each time. */
   std::vector<std::vector<double>> x_;
   /** Store the dependent variable data so we don't pass it in each time. */
@@ -152,4 +152,4 @@ class GenericNDCostFunction : public Unfit::GenericCostFunction
 
 }  // namespace Unfit
 
-#endif  // UNFIT_INCLUDE_GENERICNDCOSTFUNCTION_HPP_
+#endif  // UNFIT_INCLUDE_GENERICMODELCOSTFUNCTION_HPP_
