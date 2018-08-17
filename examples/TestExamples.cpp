@@ -41,9 +41,7 @@
 // a function, or something else. In parallel with this, you should look through
 // the models/cost functions that are called so you can see how they are
 // implemented. These tests are not exhaustive. To see what else you can do you
-// should look at the code and documentation. In particular, the optimisers
-// have several control parameters that you can play with if you are interested.
-// These, and other interesting things can be found in Options.hpp.
+// should look at the code and documentation.
 //
 // We have chosen to provide all of these examples in terms of tests, but when
 // you are writing your own models (or cost functions) it is up to you whether
@@ -407,8 +405,40 @@ TEST(GettinOutputFromUnfit)
   CHECK_CLOSE(0.64202, nm_opt.GetCost(), 1e-2);
 }
 
-// working with options, max iter, max func eval, cost, geom tolerance
+// There are several common things we might like to do when running an
+// optimisation problem, such as controlling the tolerance we need to obtain to
+// say we have an optimal solution. In addition, Unfit counts the number of
+// iterations and function evaluations as the optimisation proceeds, and
+// terminates if there are too many. Increasing these limits can also be useful.
+// In addition, the optimisers  have several control parameters that you can
+// play with to control their behaviour. You can see them all in Options.hpp but
+// here we given an example of how to the use this functionality.
+TEST(WorkingWithOptimiserOptions)
+{
+  // See the StraightLine_ReadDataFromFile example for details about this part
+  Unfit::DataFileReader<double> dfr;
+  dfr.ReadFile("examples/data/straight_line_data.txt");
+  std::vector<std::vector<double>> x(1);
+  dfr.RetrieveColumn(0, x[0]);
+  std::vector<double> y;
+  dfr.RetrieveColumn(1, y);
+  Unfit::Examples::LinearModel linear;
+  Unfit::GenericModelCostFunction linear_cost(linear, x, y);
+  std::vector<double> c {1.0, 1.0};
 
+  // Here we will choose to use the Differential Evolution method
+  Unfit::DifferentialEvolution de_opt;
+  // First we set up the options that we want to use.
+  de_opt.options.SetMaxIterations(10000);
+  de_opt.options.SetMaxFunctionEvaluations(10000);
+  de_opt.options.SetCostTolerance(1.0e-6);
+  de_opt.options.SetGeometricTolerance(1.0e-6);
+  de_opt.options.SetPopulationSize(15);
+
+  // Now that all of our options are in place, we can run the optimisation
+  auto rc = de_opt.FindMin(linear_cost, c);
+  CHECK_EQUAL(0, rc);
+}
 
 // Sometimes we have a model and we know, for example, that the parameters must
 // be positive. It could be a mechanics problem when we know the material
