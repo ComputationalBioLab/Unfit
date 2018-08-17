@@ -69,7 +69,7 @@ class ParabolicModel : public GenericModel
     // something like this:
     //
     //    std::vector<double> model(x[0].size());
-    //    for (auto i = 0u; i < x.size(); ++i) {
+    //    for (auto i = 0u; i < x[0].size(); ++i) {
     //      model[i] = c[0]*x[0][i]*x[0][i] + c[1]*x[0][i] + c[2];
     //    }
     //

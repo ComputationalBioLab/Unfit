@@ -19,6 +19,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+#include <iostream>
 #include <vector>
 #include "DataFileReader.hpp"
 #include "GenericModelCostFunction.hpp"
@@ -26,6 +27,7 @@
 #include "HodgkinHuxleyBetaNModel.hpp"
 #include "LinearCostFunction.hpp"
 #include "LinearModel.hpp"
+#include "MyFirstModel.hpp"
 #include "NonstationaryMarkovModel.hpp"
 #include "Ode2DModel.hpp"
 #include "Ode3DModel.hpp"
@@ -38,7 +40,10 @@
 // things with Unfit, whether you are doing an optimization, fitting data to
 // a function, or something else. In parallel with this, you should look through
 // the models/cost functions that are called so you can see how they are
-// implemented.
+// implemented. These tests are not exhaustive. To see what else you can do you
+// should look at the code and documentation. In particular, the optimisers
+// have several control parameters that you can play with if you are interested.
+// These, and other interesting things can be found in Options.hpp.
 //
 // We have chosen to provide all of these examples in terms of tests, but when
 // you are writing your own models (or cost functions) it is up to you whether
@@ -51,11 +56,27 @@
 
 SUITE(UnfitExamples)
 {
-// test that matches out tutorial
-
-
-// Using the different optimisers -  unfit.cbp copy?
-
+// First, here is a test that matches the example given in the Unfit tutorial on
+// how to create your own model and fit data. The corresponding model code can
+// be found in MyFirstModel.hpp in the examples directory.
+TEST(TutorialExample)
+{
+  std::vector<std::vector<double>> t_data {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}};
+  std::vector<double> y_data {1.0, 0.6065, 0.3679, 0.2231, 0.1353, 0.0821,
+                              0.0498, 0.0302, 0.0183, 0.0111, 0.0067};
+  MyFirstModel model;
+  Unfit::GenericModelCostFunction model_cost(model, t_data, y_data);
+  std::vector<double> c_guess {1.0, 1.0};
+  Unfit::NelderMead nm_opt;
+  auto rc = nm_opt.FindMin(model_cost, c_guess);
+  if (rc == 0) {
+    std::cout << "Answer: " << c_guess[0] << " " << c_guess[1] << std::endl;
+  } else {
+    std::cout << "Oh dear. RC = " << rc << std::endl;
+  }
+  // An extra check that will cause the test to fail if the optimisation fails
+  CHECK_EQUAL(0, rc);
+}
 
 // Here we have no data, no model, just a simple function to minimise, so
 // instead of creating a model, we have to create a cost function directly.
@@ -340,8 +361,51 @@ TEST(OrdinaryDifferentialEquationModelUnknownInitialCondition)
   CHECK_EQUAL(0, rc);
 }
 
-// getting output as you go. both from the optimiser and finding out model, cost
+// This example demonstrates how to get the information you need out of the
+// Unfit optimisers.
+TEST(GettinOutputFromUnfit)
+{
+  // See the StraightLine_ReadDataFromFile example for details about this part
+  Unfit::DataFileReader<double> dfr;
+  dfr.ReadFile("examples/data/straight_line_data.txt");
+  std::vector<std::vector<double>> x(1);
+  dfr.RetrieveColumn(0, x[0]);
+  std::vector<double> y;
+  dfr.RetrieveColumn(1, y);
+  Unfit::Examples::LinearModel linear;
+  Unfit::GenericModelCostFunction linear_cost(linear, x, y);
+  std::vector<double> c {1.0, 1.0};
+  Unfit::NelderMead nm_opt;
 
+  // Q. Can I get output as I go to see if the optimiser is working?
+  // A. Yes, all optimisers have a SetOutputLevel method as an option. You can
+  //    change the output level before you run the optimisation. Unfit does not
+  //    store intermediate states, so changing if afterwards will not do
+  //    anything.
+  nm_opt.options.SetOutputLevel(1);  // Iteration counter
+  nm_opt.options.SetOutputLevel(2);  // Iteration by iteration information
+  nm_opt.options.SetOutputLevel(3);  // Level 2 plus a summary at the end
+  nm_opt.options.SetOutputLevel(0);  // No output (default)
+
+  // Q. How to I know that the optimisation worked?
+  // A. Check the return code from FindMin. If the return code is zero the
+  //    optimisation process did not encounter any problems. This does not rule
+  //    out you hitting a bound (if you have them) or them finding a local
+  //    minimum, so you may need to used your common sense.
+  auto rc = nm_opt.FindMin(linear_cost, c);
+  CHECK_EQUAL(0, rc);
+
+  // Q. How to you know what the answer is?
+  // A. They are returned in the same vector you used for your initial guess.
+  //    In this case they are returned in c[0] and c[1], which you can access
+  //    directly.
+  CHECK_CLOSE(2.07455, c[0], 1e-2);
+  CHECK_CLOSE(3.62091, c[1], 1e-2);
+
+  // Q. How to you know what the final cost was?
+  // A. All optimisers have a GetCost method.
+  CHECK_CLOSE(0.64202, nm_opt.GetCost(), 1e-2);
+}
 
 // working with options, max iter, max func eval, cost, geom tolerance
 
@@ -407,4 +471,126 @@ TEST(GlobalOptimizersRequireBounds)
 // a fast escape from a cost function if something goes wrong ?? Need to be careful, modify the GenericModelCostFunction
 
 
+// This test is just a copy of what is in the main.cpp file that is run when you
+// use the non-test version of Unfit, and as such, should be kept up to date if
+// main.cpp changes. It is added as a test here so we make sure we don't break
+// non-test Unfit. It is also a good example to see how we can switch easily
+// between optimizers for the the same model.
+TEST(MainCPPUnfit)
+{
+  // A tolerance for testing the solutions against
+  const double tol = 1.0e-3;
+
+  // First we set/get our data points. You could also read them in; we have
+  // a DataFileReader class to help with that.
+  std::vector<std::vector<double>> x {{0.498531, 0.622145, 0.746551, 0.899687,
+      0.995019, 1.24803, 1.49695, 1.7464, 1.86737, 1.92478, 2.07206, 2.12789,
+      2.23212}};
+  std::vector<double> y {17.0676, 20.0356, 24.0914, 27.5963, 28.9598, 31.9736,
+      34.6866, 33.7931, 31.9415, 30.6897, 28.3853, 23.9687, 18.5146};
+
+  // Make ourselves an object of the desired model type, in this case a parabola
+  Unfit::Examples::ParabolicModel parabola;
+  // We want to fit the data by optimizing our parameters, so we need a function
+  // to calculate the cost of our model given this data set (x, y)
+  Unfit::GenericModelCostFunction parabola_cost(parabola, x, y);
+  // Choose an initial guess for (c0, c1, c2)
+  std::vector<double> c {1.0, 1.0, 1.0};
+
+  // First, let's try the Nelder-Mead simplex optimisation algorithm
+  Unfit::NelderMead nm_opt;
+  // Pass in the cost function and our initial guess for c
+  auto rc = nm_opt.FindMin(parabola_cost, c);
+  // ...and voila', your optimized parameter set is returned in c
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-21.115, c[0], tol);
+  CHECK_CLOSE(61.0367, c[1], tol);
+  CHECK_CLOSE(-9.61497, c[2], tol);
+  CHECK_CLOSE(24.9151, nm_opt.GetCost(), tol);
+
+  // If that is enough for you - great! Go and start constructing your own
+  // models. If not, below we solve the same problem again with all of the
+  // different optimisation methods implemented in Unfit.
+
+  // Now try the Levenberg-Marquardt optimisation algorithm
+  Unfit::LevenbergMarquardt lm_opt;
+  // Use the same initial guess
+  c = {1.0, 1.0, 1.0};
+  // Pass in the cost function and our initial guess for c
+  rc = lm_opt.FindMin(parabola_cost, c);
+  // ...and voila' again, your optimized parameter set
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-21.115, c[0], tol);
+  CHECK_CLOSE(61.0367, c[1], tol);
+  CHECK_CLOSE(-9.61497, c[2], tol);
+  CHECK_CLOSE(24.9151, lm_opt.GetCost(), tol);
+
+  // Now try a Genetic Algorithm approach
+  Unfit::GeneticAlgorithm ga_opt;
+  // Here the initial guess just needs to have the correct number of entries
+  c = {1.0, 1.0, 1.0};
+  // For the Genetic Algorithm, we need to set some sensible bounds
+  ga_opt.bounds.SetBounds(0, -100.0, 100.0);  // Bounds on c0
+  ga_opt.bounds.SetBounds(1, -100.0, 100.0);  // Bounds on c1
+  ga_opt.bounds.SetBounds(2, -100.0, 100.0);  // Bounds on c2
+  // Pass in the cost function and our initial guess for c
+  rc = ga_opt.FindMin(parabola_cost, c);
+  // ...and voila' again, your optimized parameter set
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-19.7735, c[0], tol);
+  CHECK_CLOSE(57.214, c[1], tol);
+  CHECK_CLOSE(-7.3312, c[2], tol);
+  CHECK_CLOSE(26.4066, ga_opt.GetCost(), tol);
+
+  // Now try the Differential Evolution algorithm
+  Unfit::DifferentialEvolution de_opt;
+  // Here the initial guess just needs to have the correct number of entries
+  c = {1.0, 1.0, 1.0};
+  // For Differential Evolution, we need to set some sensible bounds
+  de_opt.bounds.SetBounds(0, -100.0, 100.0);  // Bounds on c0
+  de_opt.bounds.SetBounds(1, -100.0, 100.0);  // Bounds on c1
+  de_opt.bounds.SetBounds(2, -100.0, 100.0);  // Bounds on c2
+  // Pass in the cost function and our initial guess for c
+  rc = de_opt.FindMin(parabola_cost, c);
+  // ...and voila' again, your optimized parameter set
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-21.115, c[0], tol);
+  CHECK_CLOSE(61.0367, c[1], tol);
+  CHECK_CLOSE(-9.61497, c[2], tol);
+  CHECK_CLOSE(24.9151, de_opt.GetCost(), tol);
+
+  // Now try the Particle Swarm algorithm
+  Unfit::ParticleSwarm ps_opt;
+  // Here the initial guess just needs to have the correct number of entries
+  c = {1.0, 1.0, 1.0};
+  // For Particle Swarm, we need to set some sensible bounds
+  ps_opt.bounds.SetBounds(0, -100.0, 0.0);  // Bounds on c0
+  ps_opt.bounds.SetBounds(1, 0.0, 100.0);   // Bounds on c1
+  ps_opt.bounds.SetBounds(2, -10.0, 10.0);  // Bounds on c2
+  // Pass in the cost function and our initial guess for c
+  rc = ps_opt.FindMin(parabola_cost, c);
+  // ...and voila' again, your optimized parameter set
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-20.2212, c[0], tol);
+  CHECK_CLOSE(58.4493, c[1], tol);
+  CHECK_CLOSE(-8.02656, c[2], tol);
+  CHECK_CLOSE(25.6234, ps_opt.GetCost(), tol);
+
+  // Now try the Simulated Annealing algorithm
+  Unfit::SimulatedAnnealing sa_opt;
+  // Here the initial guess just needs to have the correct number of entries
+  std::vector<double> init_guess_sa {1.0, 1.0, 1.0};
+  // For Simulated Annealing, we need to set some sensible bounds
+  sa_opt.bounds.SetBounds(0, -50.0, 0.0);   // Bounds on c0
+  sa_opt.bounds.SetBounds(1, 0.0, 100.0);   // Bounds on c1
+  sa_opt.bounds.SetBounds(2, -10.0, 10.0);  // Bounds on c2
+  // Pass in the cost function and our initial guess for c
+  rc = sa_opt.FindMin(parabola_cost, c);
+  // ...and voila' again, your optimized parameter set
+  CHECK_EQUAL(0, rc);
+  CHECK_CLOSE(-21.115, c[0], tol);
+  CHECK_CLOSE(61.0367, c[1], tol);
+  CHECK_CLOSE(-9.61495, c[2], tol);
+  CHECK_CLOSE(24.9151, sa_opt.GetCost(), tol);
+}
 }  // suite UnfitExamples
