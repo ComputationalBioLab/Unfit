@@ -470,17 +470,74 @@ TEST(SimpleExampleWithBounds)
   // still gets the correct answer)
 }
 
-// setting upper and lower bounds via vectors
+// In some cases we may want to set bounds on all of our parameters. We can do
+// this by creating two vectors, one containing the lower bounds and one
+// containing the upper bounds. (Note: the terms lower_bound and upper_bound are
+// reserved in C++, so call your vectors something different). Here we have an
+// optimisation with two parameters, and say we want to ensure both parameters
+// are positive. We can make a lower bound vector containing two zeros, and an
+// upper bound vector containing suitably large values. We use bound.SetBounds
+// to impose these as bounds on the optimisation.
 TEST(ExampleWithUpperAndLowerBounds)
 {
+  std::vector<std::vector<double>> x {{-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0,
+      2.0, 3.0, 4.0, 5.0}};
+  std::vector<double> y {-6.88, -4.71, -2.02, -0.98, 1.53, 3.80, 5.49, 7.75,
+      9.90, 11.97, 13.98};
+  Unfit::Examples::LinearModel linear;
+  Unfit::GenericModelCostFunction linear_cost(linear, x, y);
+  std::vector<double> c {1.0, 1.0};
 
+  // Use the Nelder-Mead simplex optimisation algorithm
+  Unfit::NelderMead nm_opt;
+  // The bounds on all of the parameters can be set via a pair of vectors.
+  // The length of these vectors must match the length of the c vector.
+  std::vector<double> lower_bnd {0.0, 0.0};
+  std::vector<double> upper_bnd {1.0e6, 1.0e6};
+  nm_opt.bounds.SetBounds(lower_bnd, upper_bnd);
+  // Pass in the cost function and our initial guess for c
+  auto rc = nm_opt.FindMin(linear_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
 }
 
-// using bounds for global optimisers. note on DE & PS have soft bounds unless you say hard; others hard.
-// Means all but nm and lm. Others require.
+// For the global optimisers, Differential Evolution, Genetic Algorithm,
+// Particle Swarm, and Simulated Annealing, you should set bounds on all of your
+// parameters. DE, GA & PS are population-based, so use these bounds to generate
+// an initial population. SA uses the bounds to generate new trial points. For
+// all of these, the default bounds are very very large (+ve and -ve) so unless
+// you set bounds yourself, based on the scale of your problem, the algorithms
+// will likely take an age to converge.
+//
+// Note also that due to their algorithms, DE & PS can generate points outside
+// the initial bounds that are given during their iterations. By default we
+// allow them to do this. If you want to strictly keep these methods within the
+// bounds you set, then set the options.SetUseHardBounds to true.
+//
+// (The optimisers that do not require bounds (but can still handle them) are
+// Nelder Mead and Levenberg Marquardt).
 TEST(GlobalOptimizersRequireBounds)
 {
+  std::vector<std::vector<double>> x {{-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0,
+      2.0, 3.0, 4.0, 5.0}};
+  std::vector<double> y {-6.88, -4.71, -2.02, -0.98, 1.53, 3.80, 5.49, 7.75,
+      9.90, 11.97, 13.98};
+  Unfit::Examples::LinearModel linear;
+  Unfit::GenericModelCostFunction linear_cost(linear, x, y);
+  std::vector<double> c {1.0, 1.0};
 
+  // Use the Differential Evolution optimisation algorithm
+  Unfit::DifferentialEvolution de_opt;
+  // Set upper and lower bounds on each parameter
+  std::vector<double> lower_bnd {-100.0, -100.0};
+  std::vector<double> upper_bnd {100.0, 100.0};
+  de_opt.bounds.SetBounds(lower_bnd, upper_bnd);
+  // Restrict DE such that it enforces the bounds for all time
+  de_opt.options.SetUseHardBounds(true);
+  // Pass in the cost function and our initial guess for c
+  auto rc = de_opt.FindMin(linear_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
 }
 
 // adding your initial guess when using a population based method
