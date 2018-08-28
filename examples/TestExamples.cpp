@@ -540,11 +540,90 @@ TEST(GlobalOptimizersRequireBounds)
   CHECK_EQUAL(0, rc);
 }
 
-// adding your initial guess when using a population based method
+// By default, the optimisation methods in Unfit (with the exception of Nelder
+// Mead and Levenberg Marquardt) will generate a random initial guess or
+// population of guesses for the unknown parameters. These will be generated
+// within the bounds that have been set. Sometimes you may already have an
+// idea of where the minimum is (e.g. from a previous time step or solution) so
+// you may want to take advantage of this. There is an option that allows you
+// to add the guess you pass in to the initial population, and this example
+// shows it in action. Note that the population based methods also allow you
+// to set the whole population, and Nelder Mead allows you to set the initial
+// simplex. See the GenericOptimizer SetPopulation documentation for details.
+TEST(AddInitialGuessToAPopulation)
+{
+  std::vector<std::vector<double>> x {{-5.0, -4.0, -3.0, -2.0, -1.0, 0.0, 1.0,
+      2.0, 3.0, 4.0, 5.0}};
+  std::vector<double> y {-6.88, -4.71, -2.02, -0.98, 1.53, 3.80, 5.49, 7.75,
+      9.90, 11.97, 13.98};
+  Unfit::Examples::LinearModel linear;
+  Unfit::GenericModelCostFunction linear_cost(linear, x, y);
+  std::vector<double> c {1.0, 1.0};
 
+  // Use the Differential Evolution optimisation algorithm
+  Unfit::DifferentialEvolution de_opt;
+  // Set upper and lower bounds on each parameter
+  std::vector<double> lower_bnd {-100.0, -100.0};
+  std::vector<double> upper_bnd {100.0, 100.0};
+  de_opt.bounds.SetBounds(lower_bnd, upper_bnd);
+  // Tell the optimiser to add our initial guess (1.0, 1.0) to the initial
+  // population. The remainder of the initial population will be randomly
+  // generated.
+  de_opt.options.SetAddInitialToPopulation(true);
+  // Pass in the cost function and our initial guess for c
+  auto rc = de_opt.FindMin(linear_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
+}
 
-// Changing data in a model, if you have multiple data sets, low res then high res, downsample, reset
+// If you have a very large data set that is taking a long time to optimise, it
+// may be useful to downsample the data set and run an initial optimisation on
+// a smaller data set to get an estimate of the parameter values (which should
+// be much faster, depending on how aggressive the downsampling). You can then
+// use those parameters as an initial guess with the larger data set to get the
+// proper solution. This example shows how to do just this, and could also be
+// applicable if you have multiple data sets but expect the parameters to be
+// similar for each set.
+TEST(MultipleDataSetsAndOptimisations)
+{
+  // A sample low resolution data set
+  std::vector<std::vector<double>> x_low {{-5.0, -1.0, 1.0, 5.0}};
+  std::vector<double> y_low {-6.88, 1.53, 5.49, 13.98};
+  Unfit::Examples::LinearModel linear;
+  Unfit::GenericModelCostFunction linear_cost(linear, x_low, y_low);
+  std::vector<double> c {1.0, 1.0};
 
+  // Use the Differential Evolution optimisation algorithm
+  Unfit::DifferentialEvolution de_opt;
+  // Set upper and lower bounds on each parameter
+  std::vector<double> lower_bnd {-100.0, -100.0};
+  std::vector<double> upper_bnd {100.0, 100.0};
+  de_opt.bounds.SetBounds(lower_bnd, upper_bnd);
+  // Pass in the cost function and our initial guess for c
+  auto rc = de_opt.FindMin(linear_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
+
+  // Now we have an approximate solution based on our low resolution data set,
+  // (stored in c), we can fit our high resolution data set
+  std::vector<std::vector<double>> x_high {{-5.0, -4.0, -3.0, -2.0, -1.0, 0.0,
+      1.0, 2.0, 3.0, 4.0, 5.0}};
+  std::vector<double> y_high {-6.88, -4.71, -2.02, -0.98, 1.53, 3.80, 5.49,
+      7.75, 9.90, 11.97, 13.98};
+  // Change the data in our cost function to the high resolution version
+  linear_cost.SetData(x_high, y_high);
+  // Reset the optimiser (we don't need to create another)
+  de_opt.Reset();
+  // Re-add the bounds
+  de_opt.bounds.SetBounds(lower_bnd, upper_bnd);
+  // The c vector already contains the best fit from our first optimisation, so
+  // we must add it to the population to make use of this information.
+  de_opt.options.SetAddInitialToPopulation(true);
+  // Pass in the cost function and our current estimate for c
+  rc = de_opt.FindMin(linear_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
+}
 
 // using multi-level optimisation to get close with global then finish with local
 
