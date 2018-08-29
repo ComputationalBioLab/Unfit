@@ -22,6 +22,7 @@
 #include <iostream>
 #include <vector>
 #include "DataFileReader.hpp"
+#include "GenerateInitialGuess.hpp"
 #include "GenericModelCostFunction.hpp"
 #include "HelicalValleyCostFunction.hpp"
 #include "HodgkinHuxleyBetaNModel.hpp"
@@ -625,14 +626,138 @@ TEST(MultipleDataSetsAndOptimisations)
   CHECK_EQUAL(0, rc);
 }
 
-// using multi-level optimisation to get close with global then finish with local
+// For certain problems it can be advantageous to use a global optimiser to get
+// close to the optimal parameter values before switching to a local optimiser
+// to refine this solution and return the optimised parameter set. This is one
+// form of what is known as multi-level optimisation and is demonstrated in the
+// example below.
+TEST(MultiLevelOptimisationGlobalThenLocal)
+{
+  // Set the experimental data
+  std::vector<std::vector<double>> x {{0.498531, 0.622145, 0.746551, 0.899687,
+      0.995019, 1.24803, 1.49695, 1.7464, 1.86737, 1.92478, 2.07206, 2.12789,
+      2.23212}};
+  std::vector<double> y {17.0676, 20.0356, 24.0914, 27.5963, 28.9598, 31.9736,
+      34.6866, 33.7931, 31.9415, 30.6897, 28.3853, 23.9687, 18.5146};
 
+  // Make ourselves an object of the desired model type, in this case a parabola
+  Unfit::Examples::ParabolicModel parabola;
+  // We want to fit the data by optimizing our parameters, so we need a function
+  // to calculate the cost of our model given this data set (x, y)
+  Unfit::GenericModelCostFunction parabola_cost(parabola, x, y);
+  // Choose an initial guess for our parameters (c0, c1, c2)
+  std::vector<double> c {1.0, 1.0, 1.0};
 
-// Finding a good initial guess with multi-level, multi-start
+  // First use a global optimiser to get close to the solution. In this case
+  // we have chosen to use Particle Swarm.
+  Unfit::ParticleSwarm ps_opt;
+  // Set upper and lower bounds on each parameter
+  std::vector<double> lower_bnd {-100.0, -100.0, -100.0};
+  std::vector<double> upper_bnd {100.0, 100.0, 100.0};
+  ps_opt.bounds.SetBounds(lower_bnd, upper_bnd);
+  // As we are only looking to get in the vicinity of the correct answer, we
+  // can choose to use loose tolerances (optional)
+  ps_opt.options.SetCostTolerance(1.0e-2);
+  ps_opt.options.SetGeometricTolerance(1.0e-2);
+  // Perform the optimisation
+  auto rc = ps_opt.FindMin(parabola_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
 
+  // Now the vector c contains the resulting parameters from the Particle Swarm
+  // optimisation, we can use a local optimiser (Nelder Mead, Levenberg
+  // Marquardt) to refine our solution.
+  Unfit::LevenbergMarquardt lm_opt;
+  // Pass in the cost function and our current guess for c
+  rc = lm_opt.FindMin(parabola_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
+}
+
+// Certain problems, particularly those which have multiple local minima, can
+// benefit from a more complete coverage of the parameter space as can be
+// achieved with a multi-start optimisation approach. Here we run multiple
+// instances of the Differential Evolution method from different starting points
+// and then choose the best solution across all of the instances as an initial
+// guess for a local optimiser (Nelder Mead). The multiple instances of
+// Differential Evolution run in parallel, if parallel hardware is available,
+// which can significantly speed up the optimisation process.
+TEST(MultiLevelMultiStartInitialGuess)
+{
+  // Set the experimental data
+  std::vector<std::vector<double>> x {{0.498531, 0.622145, 0.746551, 0.899687,
+      0.995019, 1.24803, 1.49695, 1.7464, 1.86737, 1.92478, 2.07206, 2.12789,
+      2.23212}};
+  std::vector<double> y {17.0676, 20.0356, 24.0914, 27.5963, 28.9598, 31.9736,
+      34.6866, 33.7931, 31.9415, 30.6897, 28.3853, 23.9687, 18.5146};
+
+  // Create the model and cost function
+  Unfit::Examples::ParabolicModel parabola;
+  Unfit::GenericModelCostFunction parabola_cost(parabola, x, y);
+
+  // Choose an initial guess for our parameters (c0, c1, c2)
+  std::vector<double> c {1.0, 1.0, 1.0};
+  const int number_of_unknowns =c.size();
+
+  // Set bounds on our parameters
+  std::vector<double> lower_bnd {-100.0, -100.0, -100.0};
+  std::vector<double> upper_bnd {100.0, 100.0, 100.0};
+
+  // Run multiple instances of the Differential Evolution optimiser, each with
+  // a different random seed, to provide wide coverage of the parameter space.
+  // The optimiser we want to use in this first level, (which is multi-start) is
+  // passed in as a template parameter. There is also an alternate interface
+  // which gives a lot more control over what the multi-start does.
+  c = Unfit::GenerateInitialGuess<Unfit::DifferentialEvolution>(parabola_cost,
+      lower_bnd, upper_bnd, number_of_unknowns);
+
+  // The vector c now contains the best solution across all of the Differential
+  // Evolution instances that were run. We can then use this as a starting point
+  // for a local optimiser, e.g. Nelder Mead.
+  Unfit::NelderMead nm;
+  auto rc = nm.FindMin(parabola_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
+}
 
 // Finding a good initial population with multi-level, multi-start - note MultiThreaded versions
+TEST(MultiLevelMultiStartInitialPopulation)
+{
+  // Set the experimental data
+  std::vector<std::vector<double>> x {{0.498531, 0.622145, 0.746551, 0.899687,
+      0.995019, 1.24803, 1.49695, 1.7464, 1.86737, 1.92478, 2.07206, 2.12789,
+      2.23212}};
+  std::vector<double> y {17.0676, 20.0356, 24.0914, 27.5963, 28.9598, 31.9736,
+      34.6866, 33.7931, 31.9415, 30.6897, 28.3853, 23.9687, 18.5146};
 
+  // Create the model and cost function
+  Unfit::Examples::ParabolicModel parabola;
+  Unfit::GenericModelCostFunction parabola_cost(parabola, x, y);
+
+  // Choose an initial guess for our parameters (c0, c1, c2)
+  std::vector<double> c {1.0, 1.0, 1.0};
+  const int number_of_unknowns =c.size();
+
+  // Set bounds on our parameters
+  std::vector<double> lower_bnd {-100.0, -100.0, -100.0};
+  std::vector<double> upper_bnd {100.0, 100.0, 100.0};
+
+  // We want to use a multi-start approach to generate an initial population
+  // for the Differential Evolution algorithm
+  Unfit::DifferentialEvolution de_opt;
+  // The initial Differential Evolution population is set to be the result of
+  // a multi-start Particle Swarm approach. Note that we could use Differential
+  // evolution for this too if we wanted to. There is also an alternate
+  // interface which gives a lot more control over what the multi-start does.
+  // Here the best member from each swarm is added to the initial Differential
+  // Evolution population.
+  de_opt.SetPopulation(Unfit::GenerateInitialPopulation<Unfit::ParticleSwarm>(
+      parabola_cost, lower_bnd, upper_bnd, number_of_unknowns));
+  // Run the Differential Evolution optimisation and return the result in c
+  auto rc = de_opt.FindMin(parabola_cost, c);
+  // Check the optimiser came back with a converged solution
+  CHECK_EQUAL(0, rc);
+}
 
 // a fast escape from a cost function if something goes wrong ?? Need to be careful, modify the GenericModelCostFunction
 

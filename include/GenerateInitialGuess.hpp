@@ -19,14 +19,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef UNFIT_NOTFORRELEASE_GENERATEINITIALGUESS_HPP_
-#define UNFIT_NOTFORRELEASE_GENERATEINITIALGUESS_HPP_
+#ifndef UNFIT_GENERATEINITIALGUESS_HPP_
+#define UNFIT_GENERATEINITIALGUESS_HPP_
 
 #include <algorithm>
 #include <future>
 #include <numeric>
 #include <random>
 #include <vector>
+#include "GenericCostFunction.hpp"
 
 #include <iostream>
 
