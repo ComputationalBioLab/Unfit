@@ -25,6 +25,7 @@
 #include <limits>
 #include <vector>
 #include "GenericCostFunction.hpp"
+#include "GenericModel.hpp"
 
 namespace Unfit
 {
@@ -74,6 +75,31 @@ class FirstNanCostFunction : public GenericCostFunction
     residuals.pop_back();
     residuals[0] = std::numeric_limits<double>::signaling_NaN();
     return residuals;
+  }
+};
+
+/**
+ * This function is a simple model that returns the first set of x data
+ * but sets the first value of the model to a nan.
+ */
+class FirstNanCostModel : public GenericModel
+{
+ public:
+  /**
+   * Calculate and return the cost of this function given the parameter
+   * estimates.
+   *
+   * \param c A vector containing the parameter estimates
+   * \param x A vector of vectors containing the independent data
+   * \return The first residual is always nan
+   */
+  std::vector<double> operator()(const std::vector<double> &c,
+      const std::vector<std::vector<double>> &x)
+  {
+    auto model = x[0];
+    model[0] = c[0];  // to avoid a 'c not used' warning
+    model[0] = std::numeric_limits<double>::signaling_NaN();
+    return model;
   }
 };
 

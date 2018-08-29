@@ -19,7 +19,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+#include <cmath>
 #include <iostream>
+#include <limits>
 #include <vector>
 #include "GenericModel.hpp"
 #include "GenericModelCostFunction.hpp"
@@ -49,6 +51,10 @@ std::vector<double> GenericModelCostFunction::operator()(
   // CheckData can change has_data_, so we must check again in case it did
   if (has_data_) {
     auto model_result = model_(c, x_);
+    // First check to see if the model failed before calculating the residuals
+    if (!std::isfinite(model_result[0])) {
+        return {std::numeric_limits<double>::infinity()};
+    }
     // Want r = y - f(x), and get this via r = y, then r -= f(x)
     auto residuals = y_;
     for (auto i = 0u; i < residuals.size(); ++i) {

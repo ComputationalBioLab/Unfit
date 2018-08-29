@@ -19,9 +19,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+#include <cmath>
 #include <vector>
 #include "CardiacAlphaNModel.hpp"
 #include "GenericModelCostFunction.hpp"
+#include "TestFunctions.hpp"
 #include "UnitTest++.h"
 
 static const double tolerance {1.0e-6};
@@ -129,6 +131,25 @@ TEST(GenericModelCostFunction_SetDataWrongSize)
   vm[0].pop_back();
   rc = cost_func.SetData(vm, alpha_n);  // both are okay
   CHECK(rc);
+}
+
+TEST(GenericModelCostFunction_PassThroughWithInfiniteCost)
+{
+  std::vector<double> alpha_n {0.0, 0.05, 0.1, 0.15, 0.2};
+  std::vector<std::vector<double>> vm {{-80.0, -40.0, 0.0, 40.0, 80.0}};
+  UnitTests::FirstNanCostModel nan_cost;
+  GenericModelCostFunction cost_func(nan_cost, vm, alpha_n);
+  std::vector<double> c {1.0, -0.01, 2.0};
+  auto model = nan_cost(c, vm);
+  CHECK(model.size() == vm[0].size());
+  CHECK(!std::isfinite(model[0]));
+  CHECK_CLOSE(vm[0][1], model[1], tolerance);
+  CHECK_CLOSE(vm[0][2], model[2], tolerance);
+  CHECK_CLOSE(vm[0][3], model[3], tolerance);
+  CHECK_CLOSE(vm[0][4], model[4], tolerance);
+  auto residuals = cost_func(c);
+  CHECK_EQUAL(1u, residuals.size());
+  CHECK(!std::isfinite(residuals[0]));
 }
 }  // suite UnitTestGeneric2DCostFunction
 }  // namespace UnitTests
