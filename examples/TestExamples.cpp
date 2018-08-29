@@ -32,6 +32,7 @@
 #include "NonstationaryMarkovModel.hpp"
 #include "Ode2DModel.hpp"
 #include "Ode3DModel.hpp"
+#include "OdeModelWithBailout.hpp"
 #include "ParabolicModel.hpp"
 #include "SimpleParabolicCostFunction.hpp"
 #include "Unfit.hpp"
@@ -720,7 +721,15 @@ TEST(MultiLevelMultiStartInitialGuess)
   CHECK_EQUAL(0, rc);
 }
 
-// Finding a good initial population with multi-level, multi-start - note MultiThreaded versions
+// This example is similar to the previous example in that it demonstrates a
+// multi-level, multi-start optmisation. Here, however, instead of using the
+// technique to generate a good initial guess for our optimisation, we use it
+// to generate a good initial population for a population-based method. We
+// run multiple instances of the Particle Swarm algorithm, and then the best
+// point from each swarm is added to the initial population for an optimisation
+// using Differential Evolution. The multiple instances of Particle Swarm run in
+// parallel, if parallel hardware is available, which can significantly speed up
+// the optimisation process.
 TEST(MultiLevelMultiStartInitialPopulation)
 {
   // Set the experimental data
@@ -759,8 +768,40 @@ TEST(MultiLevelMultiStartInitialPopulation)
   CHECK_EQUAL(0, rc);
 }
 
-// a fast escape from a cost function if something goes wrong ?? Need to be careful, modify the GenericModelCostFunction
+// This example is essentially the same as the previous example that uses Ode3D,
+// however, this example has a modified model that may be of interest.
+// The model here has a fast bail out when something goes wrong. Here
+// we arbitrarily decide that the model must always evaluate to positive values,
+// for all time. If we get a negative value a bailout is triggered and the
+// current parameter set is discarded. Having a bailout from your model code can
+// make a large difference to the optimisation speed when your model (or cost
+// function) can generate NaNs, Infs, or other undesirable results. Have a
+// look at the model header file to see how it is done.
+TEST(BailOutFromAModelCalculationThatHasFailed)
+{
+  // Read in the experimental data
+  Unfit::DataFileReader<double> dfr;
+  CHECK_EQUAL(0u, dfr.ReadFile("examples/data/ode_data.txt"));
+  // We need to initialise our t with the number of t dimensions we have
+  std::vector<std::vector<double>> t(1);
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(0, t[0]));
+  std::vector<double> y;
+  CHECK_EQUAL(0u, dfr.RetrieveColumn(1, y));
 
+  // Create the model then the cost function with our data
+  Unfit::Examples::OdeModelWithBailout ode_bailout;
+  Unfit::GenericModelCostFunction ode_bailout_cost(ode_bailout, t, y);
+  // The initial guess for our model parameters
+  std::vector<double> c = {1.0, 1.0, 1.0};
+
+  // Find the best fit parameters
+  Unfit::DifferentialEvolution de_opt;
+  std::vector<double> lower_bnd {-10.0, -10.0, -10.0};
+  std::vector<double> upper_bnd {10.0, 10.0, 10.0};
+  de_opt.bounds.SetBounds(lower_bnd, upper_bnd);
+  auto rc = de_opt.FindMin(ode_bailout_cost, c);
+  CHECK_EQUAL(0, rc);
+}
 
 // This test is just a copy of what is in the main.cpp file that is run when you
 // use the non-test version of Unfit, and as such, should be kept up to date if
