@@ -172,7 +172,7 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="examples/MyFirstModel.hpp">
+		<Unit filename="examples/MyFirstModelUnfit.hpp">
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>

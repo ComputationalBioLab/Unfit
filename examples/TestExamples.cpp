@@ -28,7 +28,7 @@
 #include "HodgkinHuxleyBetaNModel.hpp"
 #include "LinearCostFunction.hpp"
 #include "LinearModel.hpp"
-#include "MyFirstModel.hpp"
+#include "MyFirstModelUnfit.hpp"
 #include "NonstationaryMarkovModel.hpp"
 #include "Ode2DModel.hpp"
 #include "Ode3DModel.hpp"
@@ -58,17 +58,25 @@ SUITE(UnfitExamples)
 {
 // First, here is a test that matches the example given in the Unfit tutorial on
 // how to create your own model and fit data. The corresponding model code can
-// be found in MyFirstModel.hpp in the examples directory.
+// be found in MyFirstModelUnfit.hpp in the examples directory.
 TEST(TutorialExample)
 {
-  std::vector<std::vector<double>> t_data {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}};
   std::vector<double> y_data {1.0, 0.6065, 0.3679, 0.2231, 0.1353, 0.0821,
                               0.0498, 0.0302, 0.0183, 0.0111, 0.0067};
-  MyFirstModel model;
-  Unfit::GenericModelCostFunction model_cost(model, t_data, y_data);
+  std::vector<std::vector<double>> t_data {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10}};
   std::vector<double> c_guess {1.0, 1.0};
+  MyFirstModelUnfit mfm;
+
+//  // Uncomment the code below to try calling the model and getting the results
+//  auto model_result = mfm(c_guess, t_data);
+//  std::cout << "Time\tModel" << std::endl;
+//  for (auto i = 0u; i < model_result.size(); ++i) {
+//    std::cout << t_data[0][i] << "\t" << model_result[i] << std::endl;
+//  }
+
+  Unfit::GenericModelCostFunction mfm_cost(mfm, t_data, y_data);
   Unfit::NelderMead nm_opt;
-  auto rc = nm_opt.FindMin(model_cost, c_guess);
+  auto rc = nm_opt.FindMin(mfm_cost, c_guess);
   if (rc == 0) {
     std::cout << "Answer: " << c_guess[0] << " " << c_guess[1] << std::endl;
   } else {
