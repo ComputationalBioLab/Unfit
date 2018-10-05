@@ -36,6 +36,7 @@
 					<Add directory="include" />
 					<Add directory="examples" />
 					<Add directory="unittests" />
+					<Add directory="./" />
 				</Compiler>
 				<Linker>
 					<Add option="--coverage" />
