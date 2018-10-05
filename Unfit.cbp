@@ -65,6 +65,7 @@
 					<Add option="-std=c++11" />
 					<Add directory="include" />
 					<Add directory="examples" />
+					<Add directory="./" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
